@@ -1,0 +1,224 @@
+{
+  "images": [
+    {
+      "file": "trang09_1.jpg",
+      "page": 9,
+      "url": "/api/images/trang09_1.jpg"
+    },
+    {
+      "file": "trang50_1.jpg",
+      "page": 50,
+      "url": "/api/images/trang50_1.jpg"
+    },
+    {
+      "file": "trang50_2.jpg",
+      "page": 50,
+      "url": "/api/images/trang50_2.jpg"
+    },
+    {
+      "file": "trang68_1.jpg",
+      "page": 68,
+      "url": "/api/images/trang68_1.jpg"
+    },
+    {
+      "file": "trang68_2.jpg",
+      "page": 68,
+      "url": "/api/images/trang68_2.jpg"
+    },
+    {
+      "file": "trang68_3.jpg",
+      "page": 68,
+      "url": "/api/images/trang68_3.jpg"
+    },
+    {
+      "file": "trang68_6.jpg",
+      "page": 68,
+      "url": "/api/images/trang68_6.jpg"
+    },
+    {
+      "file": "trang69_4.jpg",
+      "page": 69,
+      "url": "/api/images/trang69_4.jpg"
+    },
+    {
+      "file": "trang69_3.jpg",
+      "page": 69,
+      "url": "/api/images/trang69_3.jpg"
+    },
+    {
+      "file": "trang69_2.jpg",
+      "page": 69,
+      "url": "/api/images/trang69_2.jpg"
+    },
+    {
+      "file": "trang69_1.jpg",
+      "page": 69,
+      "url": "/api/images/trang69_1.jpg"
+    },
+    {
+      "file": "trang70_1.jpg",
+      "page": 70,
+      "url": "/api/images/trang70_1.jpg"
+    },
+    {
+      "file": "trang70_2.jpg",
+      "page": 70,
+      "url": "/api/images/trang70_2.jpg"
+    },
+    {
+      "file": "trang70_3.jpg",
+      "page": 70,
+      "url": "/api/images/trang70_3.jpg"
+    },
+    {
+      "file": "trang72_1.jpg",
+      "page": 72,
+      "url": "/api/images/trang72_1.jpg"
+    },
+    {
+      "file": "trang72_2.jpg",
+      "page": 72,
+      "url": "/api/images/trang72_2.jpg"
+    },
+    {
+      "file": "trang73_1.jpg",
+      "page": 73,
+      "url": "/api/images/trang73_1.jpg"
+    },
+    {
+      "file": "trang73_2.jpg",
+      "page": 73,
+      "url": "/api/images/trang73_2.jpg"
+    },
+    {
+      "file": "trang73_3.jpg",
+      "page": 73,
+      "url": "/api/images/trang73_3.jpg"
+    },
+    {
+      "file": "trang74_1.jpg",
+      "page": 74,
+      "url": "/api/images/trang74_1.jpg"
+    },
+    {
+      "file": "trang74_2.jpg",
+      "page": 74,
+      "url": "/api/images/trang74_2.jpg"
+    },
+    {
+      "file": "trang75_1.jpg",
+      "page": 75,
+      "url": "/api/images/trang75_1.jpg"
+    },
+    {
+      "file": "trang75_2.jpg",
+      "page": 75,
+      "url": "/api/images/trang75_2.jpg"
+    },
+    {
+      "file": "trang75_3.jpg",
+      "page": 75,
+      "url": "/api/images/trang75_3.jpg"
+    },
+    {
+      "file": "trang76_1.jpg",
+      "page": 76,
+      "url": "/api/images/trang76_1.jpg"
+    },
+    {
+      "file": "trang76_2.jpg",
+      "page": 76,
+      "url": "/api/images/trang76_2.jpg"
+    },
+    {
+      "file": "trang77_1.jpg",
+      "page": 77,
+      "url": "/api/images/trang77_1.jpg"
+    },
+    {
+      "file": "trang77_2.jpg",
+      "page": 77,
+      "url": "/api/images/trang77_2.jpg"
+    },
+    {
+      "file": "trang78_1.jpg",
+      "page": 78,
+      "url": "/api/images/trang78_1.jpg"
+    },
+    {
+      "file": "trang78_2.jpg",
+      "page": 78,
+      "url": "/api/images/trang78_2.jpg"
+    },
+    {
+      "file": "trang79_1.jpg",
+      "page": 79,
+      "url": "/api/images/trang79_1.jpg"
+    },
+    {
+      "file": "trang79_2.jpg",
+      "page": 79,
+      "url": "/api/images/trang79_2.jpg"
+    },
+    {
+      "file": "trang79_3.jpg",
+      "page": 79,
+      "url": "/api/images/trang79_3.jpg"
+    },
+    {
+      "file": "trang80_1.jpg",
+      "page": 80,
+      "url": "/api/images/trang80_1.jpg"
+    },
+    {
+      "file": "trang80_2.jpg",
+      "page": 80,
+      "url": "/api/images/trang80_2.jpg"
+    },
+    {
+      "file": "trang80_3.jpg",
+      "page": 80,
+      "url": "/api/images/trang80_3.jpg"
+    },
+    {
+      "file": "trang81_3.jpg",
+      "page": 81,
+      "url": "/api/images/trang81_3.jpg"
+    },
+    {
+      "file": "trang81_1.jpg",
+      "page": 81,
+      "url": "/api/images/trang81_1.jpg"
+    },
+    {
+      "file": "trang81_4.jpg",
+      "page": 81,
+      "url": "/api/images/trang81_4.jpg"
+    },
+    {
+      "file": "trang82_2.jpg",
+      "page": 82,
+      "url": "/api/images/trang82_2.jpg"
+    },
+    {
+      "file": "trang82_1.jpg",
+      "page": 82,
+      "url": "/api/images/trang82_1.jpg"
+    },
+    {
+      "file": "trang82_3.jpg",
+      "page": 82,
+      "url": "/api/images/trang82_3.jpg"
+    },
+    {
+      "file": "trang83_2.jpg",
+      "page": 83,
+      "url": "/api/images/trang83_2.jpg"
+    },
+    {
+      "file": "trang83_3.jpg",
+      "page": 83,
+      "url": "/api/images/trang83_3.jpg"
+    }
+  ]
+}

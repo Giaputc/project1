@@ -1,0 +1,182 @@
+[
+  {
+    "id": "q01",
+    "question": "Điều kiện để được xét học bổng khuyến khích học tập là gì?",
+    "pages": [40, 41],
+    "keywords": ["học bổng khuyến khích"]
+  },
+  {
+    "id": "q02",
+    "question": "Học bổng khuyến khích học tập được tính theo mức nào?",
+    "pages": [40, 41],
+    "keywords": ["học bổng khuyến khích"]
+  },
+  {
+    "id": "q03",
+    "question": "Sinh viên thuộc diện chính sách được hưởng học bổng gì?",
+    "pages": [41],
+    "keywords": ["học bổng chính sách"]
+  },
+  {
+    "id": "q04",
+    "question": "Những ai được miễn giảm học phí?",
+    "pages": [42, 43],
+    "keywords": ["miễn giảm học phí"]
+  },
+  {
+    "id": "q05",
+    "question": "Mức trợ cấp xã hội cho sinh viên là bao nhiêu?",
+    "pages": [44, 45],
+    "keywords": ["trợ cấp xã hội"]
+  },
+  {
+    "id": "q06",
+    "question": "Sinh viên vay vốn tín dụng được vay tối đa bao nhiêu?",
+    "pages": [46, 47],
+    "keywords": ["vay vốn"]
+  },
+  {
+    "id": "q07",
+    "question": "Lãi suất vay vốn tín dụng sinh viên là bao nhiêu?",
+    "pages": [46, 47],
+    "keywords": ["lãi suất"]
+  },
+  {
+    "id": "q08",
+    "question": "Thủ tục đăng ký tạm trú ngoại trú gồm những gì?",
+    "pages": [48, 65],
+    "keywords": ["ngoại trú"]
+  },
+  {
+    "id": "q09",
+    "question": "Quy trình đăng ký ở ký túc xá như thế nào?",
+    "pages": [63],
+    "keywords": ["ký túc xá"]
+  },
+  {
+    "id": "q10",
+    "question": "Mức phí ở ký túc xá là bao nhiêu?",
+    "pages": [64],
+    "keywords": ["ký túc xá"]
+  },
+  {
+    "id": "q11",
+    "question": "Điểm rèn luyện được phân loại thành mấy mức?",
+    "pages": [36, 37],
+    "keywords": ["rèn luyện"]
+  },
+  {
+    "id": "q12",
+    "question": "Các hình thức kỷ luật sinh viên gồm những gì?",
+    "pages": [39, 40],
+    "keywords": ["kỷ luật"]
+  },
+  {
+    "id": "q13",
+    "question": "Khi nào sinh viên bị khiển trách?",
+    "pages": [39, 40],
+    "keywords": ["kỷ luật"]
+  },
+  {
+    "id": "q14",
+    "question": "Sinh viên bị buộc thôi học trong trường hợp nào?",
+    "pages": [39, 40],
+    "keywords": ["kỷ luật"]
+  },
+  {
+    "id": "q15",
+    "question": "Điều kiện nhận đồ án tốt nghiệp là gì?",
+    "pages": [26, 27],
+    "keywords": ["đồ án tốt nghiệp"]
+  },
+  {
+    "id": "q16",
+    "question": "Sinh viên muốn nghỉ học tạm thời cần điều kiện gì?",
+    "pages": [29],
+    "keywords": ["nghỉ học tạm thời"]
+  },
+  {
+    "id": "q17",
+    "question": "Thủ tục chuyển ngành học như thế nào?",
+    "pages": [29, 30],
+    "keywords": ["chuyển ngành"]
+  },
+  {
+    "id": "q18",
+    "question": "Sinh viên có thể học cùng lúc hai chương trình không?",
+    "pages": [31, 32],
+    "keywords": ["hai chương trình"]
+  },
+  {
+    "id": "q19",
+    "question": "Chuẩn đầu ra ngoại ngữ của trường quy định thế nào?",
+    "pages": [33, 34, 35],
+    "keywords": ["ngoại ngữ"]
+  },
+  {
+    "id": "q20",
+    "question": "Sinh viên đăng ký học phần ở đâu và khi nào?",
+    "pages": [17, 18, 50],
+    "keywords": ["đăng ký học"]
+  },
+  {
+    "id": "q21",
+    "question": "Quên mật khẩu tài khoản quản lý đào tạo thì làm sao?",
+    "pages": [49, 50],
+    "keywords": ["tài khoản"]
+  },
+  {
+    "id": "q22",
+    "question": "Cách đăng nhập app eUTC?",
+    "pages": [72, 78, 79, 80, 81, 82],
+    "keywords": ["eutc"]
+  },
+  {
+    "id": "q23",
+    "question": "Đăng xuất khỏi app eUTC như thế nào?",
+    "pages": [83],
+    "keywords": ["đăng xuất"]
+  },
+  {
+    "id": "q24",
+    "question": "Tài khoản email sinh viên được cấp như thế nào?",
+    "pages": [71],
+    "keywords": ["email"]
+  },
+  {
+    "id": "q25",
+    "question": "Học phí học kỳ được nộp vào thời gian nào?",
+    "pages": [67, 68, 69, 70],
+    "keywords": ["học phí"]
+  },
+  {
+    "id": "q26",
+    "question": "Làm thẻ sinh viên cần chuẩn bị gì?",
+    "pages": [54, 55],
+    "keywords": ["thẻ"]
+  },
+  {
+    "id": "q27",
+    "question": "Thư viện có những dịch vụ gì?",
+    "pages": [59, 60, 61, 62],
+    "keywords": ["thư viện"]
+  },
+  {
+    "id": "q28",
+    "question": "Sinh viên khám bệnh bằng bảo hiểm y tế ở đâu?",
+    "pages": [65, 66, 67],
+    "keywords": ["bảo hiểm"]
+  },
+  {
+    "id": "q29",
+    "question": "Lịch tiếp sinh viên của các đơn vị ở đâu?",
+    "pages": [85, 86],
+    "keywords": ["lịch tiếp"]
+  },
+  {
+    "id": "q30",
+    "question": "Phòng công tác chính trị và sinh viên ở đâu?",
+    "pages": [10, 11],
+    "keywords": ["công tác chính trị"]
+  }
+]

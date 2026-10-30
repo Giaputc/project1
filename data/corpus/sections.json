@@ -1,0 +1,574 @@
+{
+  "sections": [
+    {
+      "section": "LỜI NÓI ĐẦU",
+      "title": "LỜI NÓI ĐẦU",
+      "page_start": 5,
+      "page_end": 5
+    },
+    {
+      "section": "1. GIỚI THIỆU CHUNG",
+      "title": "PHẦN 1: GIỚI THIỆU VỀ TRƯỜNG ĐẠI HỌC GIAO THÔNG VẬN TẢI › 1. GIỚI THIỆU CHUNG",
+      "page_start": 7,
+      "page_end": 8
+    },
+    {
+      "section": "2. ĐỘI NGŨ, CƠ CẤU TỔ CHỨC",
+      "title": "PHẦN 1: GIỚI THIỆU VỀ TRƯỜNG ĐẠI HỌC GIAO THÔNG VẬN TẢI › 2. ĐỘI NGŨ, CƠ CẤU TỔ CHỨC",
+      "page_start": 8,
+      "page_end": 8
+    },
+    {
+      "section": "3. CÁC KÊNH THÔNG TIN ONLINE DÀNH CHO SINH VIÊN",
+      "title": "PHẦN 1: GIỚI THIỆU VỀ TRƯỜNG ĐẠI HỌC GIAO THÔNG VẬN TẢI › 3. CÁC KÊNH THÔNG TIN ONLINE DÀNH CHO SINH VIÊN",
+      "page_start": 9,
+      "page_end": 9
+    },
+    {
+      "section": "4. ĐỊA CHỈ, ĐIỆN THOẠI CÁC ĐƠN VỊ THỰC HIỆN CÔNG TÁC SINH VIÊN",
+      "title": "PHẦN 1: GIỚI THIỆU VỀ TRƯỜNG ĐẠI HỌC GIAO THÔNG VẬN TẢI › 4. ĐỊA CHỈ, ĐIỆN THOẠI CÁC ĐƠN VỊ THỰC HIỆN CÔNG TÁC SINH VIÊN",
+      "page_start": 10,
+      "page_end": 11
+    },
+    {
+      "section": "PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC",
+      "page_start": 12,
+      "page_end": 12
+    },
+    {
+      "section": "Điều 1. Phạm vi điều chỉnh và đối tượng áp dụng",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương I – NHỮNG QUY ĐỊNH CHUNG › Điều 1. Phạm vi điều chỉnh và đối tượng áp dụng",
+      "page_start": 12,
+      "page_end": 12
+    },
+    {
+      "section": "Điều 2. Chương trình đào tạo và thời gian học tập",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương I – NHỮNG QUY ĐỊNH CHUNG › Điều 2. Chương trình đào tạo và thời gian học tập",
+      "page_start": 12,
+      "page_end": 13
+    },
+    {
+      "section": "Điều 3. Phương thức tổ chức đào tạo",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương I – NHỮNG QUY ĐỊNH CHUNG › Điều 3. Phương thức tổ chức đào tạo",
+      "page_start": 14,
+      "page_end": 14
+    },
+    {
+      "section": "Điều 4. Hình thức đào tạo",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương I – NHỮNG QUY ĐỊNH CHUNG › Điều 4. Hình thức đào tạo",
+      "page_start": 14,
+      "page_end": 15
+    },
+    {
+      "section": "Điều 5. Liên kết đào tạo",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương I – NHỮNG QUY ĐỊNH CHUNG › Điều 5. Liên kết đào tạo",
+      "page_start": 15,
+      "page_end": 16
+    },
+    {
+      "section": "Điều 6. Kế hoạch giảng dạy và học tập",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương II – LẬP KẾ HOẠCH VÀ TỔ CHỨC GIẢNG DẠY › Điều 6. Kế hoạch giảng dạy và học tập",
+      "page_start": 16,
+      "page_end": 17
+    },
+    {
+      "section": "Điều 7. Tổ chức đăng ký học tập",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương II – LẬP KẾ HOẠCH VÀ TỔ CHỨC GIẢNG DẠY › Điều 7. Tổ chức đăng ký học tập",
+      "page_start": 17,
+      "page_end": 18
+    },
+    {
+      "section": "Điều 8. Tổ chức giảng dạy và học tập",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương II – LẬP KẾ HOẠCH VÀ TỔ CHỨC GIẢNG DẠY › Điều 8. Tổ chức giảng dạy và học tập",
+      "page_start": 18,
+      "page_end": 20
+    },
+    {
+      "section": "Điều 9. Đánh giá và tính điểm học phần",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương III – ĐÁNH GIÁ KẾT QUẢ HỌC TẬP VÀ CẤP BẰNG TỐT NGHIỆP › Điều 9. Đánh giá và tính điểm học phần",
+      "page_start": 21,
+      "page_end": 23
+    },
+    {
+      "section": "Điều 10. Đánh giá kết quả học tập theo học kỳ, năm học",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương III – ĐÁNH GIÁ KẾT QUẢ HỌC TẬP VÀ CẤP BẰNG TỐT NGHIỆP › Điều 10. Đánh giá kết quả học tập theo học kỳ, năm học",
+      "page_start": 23,
+      "page_end": 25
+    },
+    {
+      "section": "Điều 11. Xử lý kết quả học tập",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương III – ĐÁNH GIÁ KẾT QUẢ HỌC TẬP VÀ CẤP BẰNG TỐT NGHIỆP › Điều 11. Xử lý kết quả học tập",
+      "page_start": 25,
+      "page_end": 25
+    },
+    {
+      "section": "Điều 12. Công nhận kết quả học tập và chuyển đổi tín chỉ",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương III – ĐÁNH GIÁ KẾT QUẢ HỌC TẬP VÀ CẤP BẰNG TỐT NGHIỆP › Điều 12. Công nhận kết quả học tập và chuyển đổi tín chỉ",
+      "page_start": 26,
+      "page_end": 26
+    },
+    {
+      "section": "Điều 13. Điều kiện nhận đồ án tốt nghiệp và bảo vệ đồ án tốt nghiệp",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương III – ĐÁNH GIÁ KẾT QUẢ HỌC TẬP VÀ CẤP BẰNG TỐT NGHIỆP › Điều 13. Điều kiện nhận đồ án tốt nghiệp và bảo vệ đồ án tốt nghiệp",
+      "page_start": 26,
+      "page_end": 27
+    },
+    {
+      "section": "Điều 14. Đánh giá học phần đồ án tốt nghiệp",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương III – ĐÁNH GIÁ KẾT QUẢ HỌC TẬP VÀ CẤP BẰNG TỐT NGHIỆP › Điều 14. Đánh giá học phần đồ án tốt nghiệp",
+      "page_start": 27,
+      "page_end": 27
+    },
+    {
+      "section": "Điều 15. Công nhận tốt nghiệp và cấp bằng tốt nghiệp",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương III – ĐÁNH GIÁ KẾT QUẢ HỌC TẬP VÀ CẤP BẰNG TỐT NGHIỆP › Điều 15. Công nhận tốt nghiệp và cấp bằng tốt nghiệp",
+      "page_start": 27,
+      "page_end": 28
+    },
+    {
+      "section": "Điều 16. Nghỉ học tạm thời, thôi học",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương IV – NHỮNG QUY ĐỊNH KHÁC ĐỐI VỚI SINH VIÊN › Điều 16. Nghỉ học tạm thời, thôi học",
+      "page_start": 29,
+      "page_end": 29
+    },
+    {
+      "section": "Điều 17. Chuyển ngành, chuyển nơi học, chuyển cơ sở đào tạo, chuyển hình thức học",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương IV – NHỮNG QUY ĐỊNH KHÁC ĐỐI VỚI SINH VIÊN › Điều 17. Chuyển ngành, chuyển nơi học, chuyển cơ sở đào tạo, chuyển hình thức học",
+      "page_start": 29,
+      "page_end": 30
+    },
+    {
+      "section": "Điều 18. Trao đổi sinh viên và hợp tác trong đào tạo",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương IV – NHỮNG QUY ĐỊNH KHÁC ĐỐI VỚI SINH VIÊN › Điều 18. Trao đổi sinh viên và hợp tác trong đào tạo",
+      "page_start": 31,
+      "page_end": 31
+    },
+    {
+      "section": "Điều 19. Học cùng lúc hai chương trình",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương IV – NHỮNG QUY ĐỊNH KHÁC ĐỐI VỚI SINH VIÊN › Điều 19. Học cùng lúc hai chương trình",
+      "page_start": 31,
+      "page_end": 32
+    },
+    {
+      "section": "Điều 20. Học liên thông đối với người có văn bằng khác",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương IV – NHỮNG QUY ĐỊNH KHÁC ĐỐI VỚI SINH VIÊN › Điều 20. Học liên thông đối với người có văn bằng khác",
+      "page_start": 32,
+      "page_end": 32
+    },
+    {
+      "section": "Điều 21. Xử lý vi phạm đối với sinh viên",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương IV – NHỮNG QUY ĐỊNH KHÁC ĐỐI VỚI SINH VIÊN › Điều 21. Xử lý vi phạm đối với sinh viên",
+      "page_start": 32,
+      "page_end": 32
+    },
+    {
+      "section": "PHẦN 2.2. QUI ĐỊNH VỀ CHUẨN ĐẦU RA NGOẠI NGỮ",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.2. QUI ĐỊNH VỀ CHUẨN ĐẦU RA NGOẠI NGỮ",
+      "page_start": 33,
+      "page_end": 33
+    },
+    {
+      "section": "Điều 22. Thực hiện quy chế",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC › Chương V – TỔ CHỨC THỰC HIỆN › Điều 22. Thực hiện quy chế",
+      "page_start": 33,
+      "page_end": 33
+    },
+    {
+      "section": "1. Chương trình đào tạo ngoại ngữ",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.2. QUI ĐỊNH VỀ CHUẨN ĐẦU RA NGOẠI NGỮ › 1. Chương trình đào tạo ngoại ngữ",
+      "page_start": 34,
+      "page_end": 34
+    },
+    {
+      "section": "2. Tổ chức đào tạo ngoại ngữ",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.2. QUI ĐỊNH VỀ CHUẨN ĐẦU RA NGOẠI NGỮ › 2. Tổ chức đào tạo ngoại ngữ",
+      "page_start": 34,
+      "page_end": 35
+    },
+    {
+      "section": "1. Các tiêu chí đánh giá và khung điểm",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.3. QUY ĐỊNH VỀ ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN › 1. Các tiêu chí đánh giá và khung điểm",
+      "page_start": 36,
+      "page_end": 36
+    },
+    {
+      "section": "2. Phân loại kết quả rèn luyện",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.3. QUY ĐỊNH VỀ ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN › 2. Phân loại kết quả rèn luyện",
+      "page_start": 36,
+      "page_end": 36
+    },
+    {
+      "section": "PHẦN 2.3. QUY ĐỊNH VỀ ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.3. QUY ĐỊNH VỀ ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN",
+      "page_start": 36,
+      "page_end": 36
+    },
+    {
+      "section": "3. Phân loại để đánh giá",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.3. QUY ĐỊNH VỀ ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN › 3. Phân loại để đánh giá",
+      "page_start": 37,
+      "page_end": 37
+    },
+    {
+      "section": "1. Các hành vi sinh viên không được làm",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.4. QUY ĐỊNH VỀ KỶ LUẬT SINH VIÊN › 1. Các hành vi sinh viên không được làm",
+      "page_start": 38,
+      "page_end": 39
+    },
+    {
+      "section": "4. Kết quả đánh giá",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.3. QUY ĐỊNH VỀ ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN › 4. Kết quả đánh giá",
+      "page_start": 38,
+      "page_end": 38
+    },
+    {
+      "section": "5. Quyền và nghĩa vụ của sinh viên",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.3. QUY ĐỊNH VỀ ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN › 5. Quyền và nghĩa vụ của sinh viên",
+      "page_start": 38,
+      "page_end": 38
+    },
+    {
+      "section": "2. Hình thức kỷ luật và nội dung vi phạm",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.4. QUY ĐỊNH VỀ KỶ LUẬT SINH VIÊN › 2. Hình thức kỷ luật và nội dung vi phạm",
+      "page_start": 39,
+      "page_end": 40
+    },
+    {
+      "section": "1. Học bổng khuyến khích học tập",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.5. QUY ĐỊNH VỀ HỌC BỔNG › 1. Học bổng khuyến khích học tập",
+      "page_start": 40,
+      "page_end": 41
+    },
+    {
+      "section": "PHẦN 2.5. QUY ĐỊNH VỀ HỌC BỔNG",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.5. QUY ĐỊNH VỀ HỌC BỔNG",
+      "page_start": 40,
+      "page_end": 40
+    },
+    {
+      "section": "2. Học bổng chính sách",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.5. QUY ĐỊNH VỀ HỌC BỔNG › 2. Học bổng chính sách",
+      "page_start": 41,
+      "page_end": 41
+    },
+    {
+      "section": "1. Miễn giảm học phí",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.6. QUY ĐỊNH VỀ CHẾ ĐỘ CHÍNH SÁCH › 1. Miễn giảm học phí",
+      "page_start": 42,
+      "page_end": 43
+    },
+    {
+      "section": "PHẦN 2.6. QUY ĐỊNH VỀ CHẾ ĐỘ CHÍNH SÁCH",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.6. QUY ĐỊNH VỀ CHẾ ĐỘ CHÍNH SÁCH",
+      "page_start": 42,
+      "page_end": 42
+    },
+    {
+      "section": "2. Trợ cấp ưu đãi",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.6. QUY ĐỊNH VỀ CHẾ ĐỘ CHÍNH SÁCH › 2. Trợ cấp ưu đãi",
+      "page_start": 43,
+      "page_end": 44
+    },
+    {
+      "section": "3. Trợ cấp xã hội",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.6. QUY ĐỊNH VỀ CHẾ ĐỘ CHÍNH SÁCH › 3. Trợ cấp xã hội",
+      "page_start": 44,
+      "page_end": 45
+    },
+    {
+      "section": "4. Hỗ trợ chi phí học tập:",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.6. QUY ĐỊNH VỀ CHẾ ĐỘ CHÍNH SÁCH › 4. Hỗ trợ chi phí học tập:",
+      "page_start": 45,
+      "page_end": 45
+    },
+    {
+      "section": "5. Hồ sơ:",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.6. QUY ĐỊNH VỀ CHẾ ĐỘ CHÍNH SÁCH › 5. Hồ sơ:",
+      "page_start": 45,
+      "page_end": 46
+    },
+    {
+      "section": "1. Đối tượng được vay vốn",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.7. QUY ĐỊNH VỀ VAY VỐN TÍN DỤNG › 1. Đối tượng được vay vốn",
+      "page_start": 46,
+      "page_end": 47
+    },
+    {
+      "section": "PHẦN 2.7. QUY ĐỊNH VỀ VAY VỐN TÍN DỤNG",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.7. QUY ĐỊNH VỀ VAY VỐN TÍN DỤNG",
+      "page_start": 46,
+      "page_end": 46
+    },
+    {
+      "section": "2. Mức vốn cho vay",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.7. QUY ĐỊNH VỀ VAY VỐN TÍN DỤNG › 2. Mức vốn cho vay",
+      "page_start": 47,
+      "page_end": 47
+    },
+    {
+      "section": "3. Lãi suất cho vay",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.7. QUY ĐỊNH VỀ VAY VỐN TÍN DỤNG › 3. Lãi suất cho vay",
+      "page_start": 47,
+      "page_end": 47
+    },
+    {
+      "section": "4. Thời hạn cho vay",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.7. QUY ĐỊNH VỀ VAY VỐN TÍN DỤNG › 4. Thời hạn cho vay",
+      "page_start": 47,
+      "page_end": 47
+    },
+    {
+      "section": "5. Trả nợ gốc và lãi tiền vay",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.7. QUY ĐỊNH VỀ VAY VỐN TÍN DỤNG › 5. Trả nợ gốc và lãi tiền vay",
+      "page_start": 47,
+      "page_end": 47
+    },
+    {
+      "section": "1. Mục đích",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.8. QUY ĐỊNH QUẢN LÝ SINH VIÊN NGOẠI TRÚ › 1. Mục đích",
+      "page_start": 48,
+      "page_end": 48
+    },
+    {
+      "section": "2. Quyền của học sinh, sinh viên ngoại trú",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.8. QUY ĐỊNH QUẢN LÝ SINH VIÊN NGOẠI TRÚ › 2. Quyền của học sinh, sinh viên ngoại trú",
+      "page_start": 48,
+      "page_end": 48
+    },
+    {
+      "section": "3. Nghĩa vụ của học sinh, sinh viên ngoại trú",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.8. QUY ĐỊNH QUẢN LÝ SINH VIÊN NGOẠI TRÚ › 3. Nghĩa vụ của học sinh, sinh viên ngoại trú",
+      "page_start": 48,
+      "page_end": 48
+    },
+    {
+      "section": "PHẦN 2.8. QUY ĐỊNH QUẢN LÝ SINH VIÊN NGOẠI TRÚ",
+      "title": "PHẦN 2: CÁC QUY CHẾ, QUI ĐỊNH › PHẦN 2.8. QUY ĐỊNH QUẢN LÝ SINH VIÊN NGOẠI TRÚ",
+      "page_start": 48,
+      "page_end": 48
+    },
+    {
+      "section": "1. Hướng dẫn sử dụng tài khoản QLĐT",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › I. TÀI KHOẢN QUẢN LÝ ĐÀO TẠO VÀ ĐĂNG KÝ HỌC › 1. Hướng dẫn sử dụng tài khoản QLĐT",
+      "page_start": 49,
+      "page_end": 50
+    },
+    {
+      "section": "2. Hướng dẫn đăng ký học",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › I. TÀI KHOẢN QUẢN LÝ ĐÀO TẠO VÀ ĐĂNG KÝ HỌC › 2. Hướng dẫn đăng ký học",
+      "page_start": 50,
+      "page_end": 50
+    },
+    {
+      "section": "2. Hướng dẫn thực hiện:",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › II. ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN › 2. Hướng dẫn thực hiện:",
+      "page_start": 51,
+      "page_end": 51
+    },
+    {
+      "section": "3. Sử dụng kết quả RLSV",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › II. ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN › 3. Sử dụng kết quả RLSV",
+      "page_start": 51,
+      "page_end": 51
+    },
+    {
+      "section": "4. Quyền và nghĩa vụ của sinh viên",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › II. ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN › 4. Quyền và nghĩa vụ của sinh viên",
+      "page_start": 51,
+      "page_end": 51
+    },
+    {
+      "section": "II. ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › II. ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN",
+      "page_start": 51,
+      "page_end": 51
+    },
+    {
+      "section": "1. Trình tự và thủ tục xét kỷ luật:",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › IV. QUY TRÌNH KỶ LUẬT VÀ CHẤM DỨT KỶ LUẬT › 1. Trình tự và thủ tục xét kỷ luật:",
+      "page_start": 52,
+      "page_end": 52
+    },
+    {
+      "section": "2. Hướng dẫn thực hiện đánh giá CVHT:",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › III. ĐÁNH GIÁ CỐ VẤN HỌC TẬP › 2. Hướng dẫn thực hiện đánh giá CVHT:",
+      "page_start": 52,
+      "page_end": 52
+    },
+    {
+      "section": "2. Hồ sơ xử lý kỷ luật của sinh viên:",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › IV. QUY TRÌNH KỶ LUẬT VÀ CHẤM DỨT KỶ LUẬT › 2. Hồ sơ xử lý kỷ luật của sinh viên:",
+      "page_start": 52,
+      "page_end": 52
+    },
+    {
+      "section": "III. ĐÁNH GIÁ CỐ VẤN HỌC TẬP",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › III. ĐÁNH GIÁ CỐ VẤN HỌC TẬP",
+      "page_start": 52,
+      "page_end": 52
+    },
+    {
+      "section": "3. Chấm dứt hiệu lực của quyết định kỷ luật",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › IV. QUY TRÌNH KỶ LUẬT VÀ CHẤM DỨT KỶ LUẬT › 3. Chấm dứt hiệu lực của quyết định kỷ luật",
+      "page_start": 53,
+      "page_end": 53
+    },
+    {
+      "section": "4. Đơn vị thường trực giải quyết các vấn đề kỷ luật sinh viên:",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › IV. QUY TRÌNH KỶ LUẬT VÀ CHẤM DỨT KỶ LUẬT › 4. Đơn vị thường trực giải quyết các vấn đề kỷ luật sinh viên:",
+      "page_start": 53,
+      "page_end": 53
+    },
+    {
+      "section": "V. QUY TRÌNH CẤP GIẤY XÁC NHẬN CHẾ ĐỘ CHÍNH SÁCH",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › V. QUY TRÌNH CẤP GIẤY XÁC NHẬN CHẾ ĐỘ CHÍNH SÁCH",
+      "page_start": 53,
+      "page_end": 54
+    },
+    {
+      "section": "1. Quyền lợi của sinh viên",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › VII. QUY TRÌNH CẤP THẺ SINH VIÊN › 1. Quyền lợi của sinh viên",
+      "page_start": 54,
+      "page_end": 54
+    },
+    {
+      "section": "2. Trách nhiệm của sinh viên",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › VII. QUY TRÌNH CẤP THẺ SINH VIÊN › 2. Trách nhiệm của sinh viên",
+      "page_start": 54,
+      "page_end": 54
+    },
+    {
+      "section": "VI. QUY TRÌNH CẤP GIẤY XÁC NHẬN VAY VỐN TÍN DỤNG",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › VI. QUY TRÌNH CẤP GIẤY XÁC NHẬN VAY VỐN TÍN DỤNG",
+      "page_start": 54,
+      "page_end": 54
+    },
+    {
+      "section": "1. Hoạt động sinh viên",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › VIII. HOẠT ĐỘNG SINH VIÊN - TỔ CHỨC ĐOÀN, HỘI › 1. Hoạt động sinh viên",
+      "page_start": 55,
+      "page_end": 59
+    },
+    {
+      "section": "3. Quy trình cấp thẻ",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › VII. QUY TRÌNH CẤP THẺ SINH VIÊN › 3. Quy trình cấp thẻ",
+      "page_start": 55,
+      "page_end": 55
+    },
+    {
+      "section": "1. Thông tin chung",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › IX. TRUNG TÂM THÔNG TIN - THƯ VIỆN › 1. Thông tin chung",
+      "page_start": 59,
+      "page_end": 59
+    },
+    {
+      "section": "2. Một số quy định",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › IX. TRUNG TÂM THÔNG TIN - THƯ VIỆN › 2. Một số quy định",
+      "page_start": 59,
+      "page_end": 60
+    },
+    {
+      "section": "3. Một số dịch vụ tại Trung tâm Thông tin - Thư viện",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › IX. TRUNG TÂM THÔNG TIN - THƯ VIỆN › 3. Một số dịch vụ tại Trung tâm Thông tin - Thư viện",
+      "page_start": 60,
+      "page_end": 62
+    },
+    {
+      "section": "1. Giới thiệu chung:",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › X. KÝ TÚC XÁ › 1. Giới thiệu chung:",
+      "page_start": 62,
+      "page_end": 62
+    },
+    {
+      "section": "2. Quy trình đăng ký ở KTX",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › X. KÝ TÚC XÁ › 2. Quy trình đăng ký ở KTX",
+      "page_start": 63,
+      "page_end": 63
+    },
+    {
+      "section": "3. Mức phí đóng, nộp khi sinh viên vào KTX",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › X. KÝ TÚC XÁ › 3. Mức phí đóng, nộp khi sinh viên vào KTX",
+      "page_start": 64,
+      "page_end": 64
+    },
+    {
+      "section": "1. Các quy định",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XII. CHĂM SÓC Y TẾ - THANH TOÁN BẢO HIỂM › 1. Các quy định",
+      "page_start": 65,
+      "page_end": 66
+    },
+    {
+      "section": "1. Thủ tục đăng ký ngoại trú",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XI. THỦ TỤC ĐĂNG KÝ VÀ CẤP XÁC NHẬN CHO SINH VIÊN NGOẠI TRÚ › 1. Thủ tục đăng ký ngoại trú",
+      "page_start": 65,
+      "page_end": 65
+    },
+    {
+      "section": "2. Quy trình, thủ tục khi đi khám bệnh",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XII. CHĂM SÓC Y TẾ - THANH TOÁN BẢO HIỂM › 2. Quy trình, thủ tục khi đi khám bệnh",
+      "page_start": 66,
+      "page_end": 66
+    },
+    {
+      "section": "3. Thanh toán bảo hiểm",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XII. CHĂM SÓC Y TẾ - THANH TOÁN BẢO HIỂM › 3. Thanh toán bảo hiểm",
+      "page_start": 66,
+      "page_end": 67
+    },
+    {
+      "section": "XIII. HỌC PHÍ - HỌC BỔNG, TRỢ CẤP",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XIII. HỌC PHÍ - HỌC BỔNG, TRỢ CẤP",
+      "page_start": 67,
+      "page_end": 70
+    },
+    {
+      "section": "6. Phát học bổng và Trợ cấp xã hội",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XIII. HỌC PHÍ - HỌC BỔNG, TRỢ CẤP › 6. Phát học bổng và Trợ cấp xã hội",
+      "page_start": 70,
+      "page_end": 70
+    },
+    {
+      "section": "1. Thông tin về tài khoản email",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XIV. EMAIL SINH VIÊN › 1. Thông tin về tài khoản email",
+      "page_start": 71,
+      "page_end": 71
+    },
+    {
+      "section": "1. Cài đặt App",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XV. TÀI LIỆU HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG APP eUTC › 1. Cài đặt App",
+      "page_start": 72,
+      "page_end": 72
+    },
+    {
+      "section": "2. Đăng nhập và sử dụng app eUTC",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XV. TÀI LIỆU HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG APP eUTC › 2. Đăng nhập và sử dụng app eUTC",
+      "page_start": 78,
+      "page_end": 82
+    },
+    {
+      "section": "3. Đăng xuất",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XV. TÀI LIỆU HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG APP eUTC › 3. Đăng xuất",
+      "page_start": 83,
+      "page_end": 83
+    },
+    {
+      "section": "1. Quản lý hồ sơ sinh viên",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XVI. QUẢN LÝ HỒ SƠ - THANH TOÁN TÀI SẢN RA TRƯỜNG › 1. Quản lý hồ sơ sinh viên",
+      "page_start": 84,
+      "page_end": 84
+    },
+    {
+      "section": "2. Thanh toán tài sản ra trường",
+      "title": "PHẦN 3: HƯỚNG DẪN THỰC HIỆN › XVI. QUẢN LÝ HỒ SƠ - THANH TOÁN TÀI SẢN RA TRƯỜNG › 2. Thanh toán tài sản ra trường",
+      "page_start": 84,
+      "page_end": 84
+    },
+    {
+      "section": "LỊCH TIẾP SINH VIÊN CỦA CÁC ĐƠN VỊ",
+      "title": "LỊCH TIẾP SINH VIÊN CỦA CÁC ĐƠN VỊ",
+      "page_start": 85,
+      "page_end": 86
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+## TÀI LIỆU
+{context}
+
+## CÂU HỎI CỦA SINH VIÊN
+{question}
+
+## YÊU CẦU TRẢ LỜI
+- Trả lời bằng tiếng Việt, gạch đầu dòng, tối đa 5 ý.
+- Mỗi ý kết thúc bằng trích nguồn [T1], [T2]...
+- Nếu thiếu dữ liệu: trả lời đúng 1 câu "Không có thông tin này trong tài liệu."
+
+## TRẢ LỜI

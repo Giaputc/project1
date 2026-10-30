@@ -1,0 +1,643 @@
+{
+  "version": 2,
+  "doc": "so_tay_sinh_vien_k64.md",
+  "note": "23 tag cố định = 12 tag Phần 1 + Phần 2 + 11 tag Phần 3 (chủ đề mới: tài khoản QLĐT, đánh giá CVHT, thẻ SV, Đoàn-Hội, thư viện, KTX, BHYT, nộp học phí, email, app eUTC, hồ sơ-TTTS). Các mục Phần 3 trùng chủ đề Phần 2 được cross-tag vào tag cũ (II→rèn luyện, IV→kỷ luật, V→chính sách, VI→vay vốn, XI→ngoại trú, XIII.6→học bổng, Lịch tiếp→đơn vị). Ánh xạ deterministic từ mục lục. Dùng cho: (1) chấm điểm mềm câu hỏi, (2) tag boost / scoped search trên chunk.",
+  "tags": [
+    {
+      "id": "gioi-thieu-truong",
+      "hashtag": "#gioi-thieu-truong",
+      "description": "Lịch sử hình thành (tiền thân Trường Cao đẳng Công chính 1918, các mốc đổi tên, QĐ 42/CP ngày 24/3/1962, đổi tên năm 1985, Phân hiệu TP.HCM 1990), sứ mạng, tầm nhìn đến 2030, giá trị cốt lõi (Tiên phong – Chất lượng – Trách nhiệm – Thích ứng).",
+      "synonyms": [
+        "giới thiệu trường",
+        "lịch sử trường",
+        "tiền thân",
+        "thành lập năm nào",
+        "đổi tên trường",
+        "trường cũ tên gì",
+        "sứ mạng",
+        "tầm nhìn",
+        "giá trị cốt lõi",
+        "phân hiệu",
+        "cơ sở 2",
+        "ĐH GTVT",
+        "trường UTC",
+        "1918",
+        "1945",
+        "1962"
+      ],
+      "source": "Phần 1 › mục 1. GIỚI THIỆU CHUNG (tr. 7, dòng 70-114)",
+      "page_range": [
+        7,
+        8
+      ],
+      "parent": null,
+      "examples": [
+        "Hà nội đẹp lắm"
+      ]
+    },
+    {
+      "id": "co-cau-to-chuc",
+      "hashtag": "#co-cau-to-chuc",
+      "description": "Đội ngũ cán bộ – giảng viên (gần 1.100 người: 260 Tiến sĩ, 469 Thạc sĩ, 90 GS-PGS) và sơ đồ tổ chức nhà trường (khoa, phòng, trung tâm).",
+      "synonyms": [
+        "cơ cấu tổ chức",
+        "sơ đồ tổ chức",
+        "bộ máy tổ chức",
+        "đội ngũ giảng viên",
+        "số lượng giảng viên",
+        "có bao nhiêu tiến sĩ",
+        "khoa nào",
+        "phòng ban",
+        "lãnh đạo",
+        "hiệu trưởng",
+        "tổ chức nhà trường"
+      ],
+      "source": "Phần 1 › mục 2. ĐỘI NGŨ, CƠ CẤU TỔ CHỨC (tr. 8, dòng 115-124)",
+      "page_range": [
+        8,
+        8
+      ],
+      "parent": null
+    },
+    {
+      "id": "kenh-thong-tin-online",
+      "hashtag": "#kenh-thong-tin-online",
+      "description": "Các trang thông tin chính thức: utc.edu.vn, qldt.utc.edu.vn, sinhvienhientai.utc.edu.vn, hotrosinhvien.utc.edu.vn và fanpage Facebook của trường.",
+      "synonyms": [
+        "kênh thông tin",
+        "trang web",
+        "website",
+        "link trang",
+        "trang đào tạo",
+        "qldt",
+        "trang sinh viên",
+        "hỗ trợ sinh viên",
+        "fanpage",
+        "facebook",
+        "cổng thông tin",
+        "mạng xã hội",
+        "theo dõi thông tin ở đâu"
+      ],
+      "source": "Phần 1 › mục 3. CÁC KÊNH THÔNG TIN ONLINE (tr. 9, dòng 125-132)",
+      "page_range": [
+        9,
+        9
+      ],
+      "parent": null
+    },
+    {
+      "id": "don-vi-cong-tac-sinh-vien",
+      "hashtag": "#don-vi-cong-tac-sinh-vien",
+      "description": "Bảng địa chỉ + điện thoại 27 đơn vị: Phòng Đào tạo đại học, P. CTCT & Sinh viên, VP Hỗ trợ sinh viên, Đoàn, Hội SV, Ban QL KTX, các khoa, trung tâm, Trạm Y tế, P. Tài chính – Kế toán…",
+      "synonyms": [
+        "địa chỉ",
+        "số điện thoại",
+        "số máy",
+        "liên hệ",
+        "gặp ai",
+        "ở phòng nào",
+        "nhà nào",
+        "gọi cho đâu",
+        "phòng đào tạo ở đâu",
+        "hot line",
+        "đơn vị",
+        "địa điểm",
+        "văn phòng"
+      ],
+      "source": "Phần 1 › mục 4. ĐỊA CHỈ, ĐIỆN THOẠI CÁC ĐƠN VỊ (tr. 10-11, dòng 133-163) + LỊCH TIẾP SINH VIÊN CỦA CÁC ĐƠN VỊ (tr. 85-86, dòng 2046-2063)",
+      "page_range": [
+        10,
+        11,
+        85,
+        86
+      ],
+      "parent": null,
+      "examples": [
+        "LỊCH TIẾP SINH VIÊN CỦA CÁC ĐƠN VỊ×"
+      ]
+    },
+    {
+      "id": "quy-che-dao-tao",
+      "hashtag": "#quy-che-dao-tao",
+      "description": "Quy chế đào tạo đại học (QĐ 2006/QĐ-ĐHGTVT) – 22 Điều, 5 chương: quy định chung (chương trình đào tạo, thời gian học, phương thức/hình thức, liên kết), kế hoạch & tổ chức giảng dạy, đánh giá kết quả & cấp bằng, quy định khác với SV (nghỉ học, chuyển ngành, trao đổi SV, liên thông, xử lý vi phạm), tổ chức thực hiện.",
+      "synonyms": [
+        "quy chế đào tạo",
+        "quy chế",
+        "tín chỉ",
+        "học kỳ",
+        "học phần",
+        "đăng ký học",
+        "thi kết thúc học phần",
+        "điểm số",
+        "học lại",
+        "học cải thiện",
+        "cảnh báo học tập",
+        "xếp loại học lực",
+        "tín chỉ tích lũy",
+        "điều kiện tiên quyết",
+        "tốt nghiệp",
+        "bằng cử nhân",
+        "đồ án tốt nghiệp",
+        "chuyển ngành",
+        "chuyển trường",
+        "bảo lưu",
+        "nghỉ học",
+        "thôi học",
+        "liên thông",
+        "thời gian đào tạo tối đa"
+      ],
+      "source": "Phần 2.1. QUY CHẾ ĐÀO TẠO ĐẠI HỌC (tr. 12-32, dòng 167-758)",
+      "page_range": [
+        12,
+        32
+      ],
+      "parent": null
+    },
+    {
+      "id": "chuan-dau-ra-ngoai-ngu",
+      "hashtag": "#chuan-dau-ra-ngoai-ngu",
+      "description": "Đạt ngoại ngữ bậc 3 (tương đương B1) để tốt nghiệp; 3 ngoại ngữ Anh/Nga/Pháp; cấu trúc A1 → A2 (tăng cường, không tính điểm tích lũy) → B1 (bắt buộc, 4 tín chỉ) + ngoại ngữ chuyên ngành (3 tín chỉ); miễn học nếu có chứng chỉ B1 công nhận; phân loại trình độ khi nhập học.",
+      "synonyms": [
+        "ngoại ngữ",
+        "tiếng anh",
+        "A1",
+        "A2",
+        "B1",
+        "chứng chỉ ngoại ngữ",
+        "chuẩn ngoại ngữ",
+        "miễn học ngoại ngữ",
+        "thi phân loại",
+        "tiếng nga",
+        "tiếng pháp",
+        "điều kiện tốt nghiệp ngoại ngữ",
+        "học ngoại ngữ",
+        "ngoại ngữ chuyên ngành",
+        "bằng ngoại ngữ",
+        "B2"
+      ],
+      "source": "Phần 2.2. QUI ĐỊNH VỀ CHUẨN ĐẦU RA NGOẠI NGỮ (tr. 33-35, dòng 759-817)",
+      "page_range": [
+        33,
+        35
+      ],
+      "parent": null,
+      "examples": []
+    },
+    {
+      "id": "danh-gia-ren-luyen",
+      "hashtag": "#danh-gia-ren-luyen",
+      "description": "Đánh giá rèn luyện (RLSV) theo TT 16/2015/TT-BGDĐT – 5 tiêu chí (học tập 20, nội quy 25, chính trị-XH 20, công dân 25, cán bộ lớp 10), phân loại xuất sắc/tốt/khá/trung bình/yếu/kém theo thang 100; ảnh hưởng của kỷ luật; điểm HK/năm/toàn khóa; dùng xét học bổng, tốt nghiệp; khiếu nại. LƯU Ý: điểm rèn luyện (thang 100) KHÁC điểm học tập (thang 10/4, theo học phần) – câu hỏi về điểm trung bình/chủng loại học lực không thuộc tag này.",
+      "synonyms": [
+        "rèn luyện",
+        "điểm rèn luyện",
+        "RLSV",
+        "đánh giá rèn luyện",
+        "xếp loại rèn luyện",
+        "tiêu chí rèn luyện",
+        "tự đánh giá",
+        "họp đánh giá rèn luyện",
+        "hạnh kiểm",
+        "rèn luyện xuất sắc",
+        "rèn luyện yếu",
+        "điểm tổng kết rèn luyện"
+      ],
+      "source": "Phần 2.3. QUY ĐỊNH VỀ ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN (tr. 36-37, dòng 818-891) + Phần 3 › mục II. ĐÁNH GIÁ RÈN LUYỆN SINH VIÊN (tr. 51-52, dòng 1218-1243)",
+      "page_range": [
+        36,
+        37,
+        51,
+        52
+      ],
+      "parent": null
+    },
+    {
+      "id": "ky-luat-sinh-vien",
+      "hashtag": "#ky-luat-sinh-vien",
+      "description": "Hành vi SV không được làm (Điều 88 Luật GD, Điều 61 Luật GDĐH: xúc phạm, gian lận thi cử, rượu bia trong giờ học, gây rối, tệ nạn); hình thức kỷ luật: khiển trách → cảnh cáo → đình chỉ có thời hạn → buộc thôi học; từ cảnh cáo trở lên lưu hồ sơ và thông báo gia đình.",
+      "synonyms": [
+        "kỷ luật",
+        "kỉ luật",
+        "vi phạm",
+        "khiển trách",
+        "cảnh cáo",
+        "đình chỉ học tập",
+        "buộc thôi học",
+        "gian lận thi cử",
+        "gian lận",
+        "xúc phạm",
+        "gây rối",
+        "trừng phạt",
+        "xử lý kỷ luật",
+        "hành vi vi phạm",
+        "khung kỷ luật",
+        "Đuổi học"
+      ],
+      "source": "Phần 2.4. QUY ĐỊNH VỀ KỶ LUẬT SINH VIÊN (tr. 38-39, dòng 892-933) + Phần 3 › mục IV. QUY TRÌNH KỶ LUẬT VÀ CHẤM DỨT KỶ LUẬT (tr. 52-53, dòng 1256-1293)",
+      "page_range": [
+        38,
+        39,
+        52,
+        53
+      ],
+      "parent": null,
+      "examples": []
+    },
+    {
+      "id": "hoc-bong",
+      "hashtag": "#hoc-bong",
+      "description": "Học bổng khuyến khích học tập (KKHT) – loại Khá/Giỏi/Xuất sắc, điều kiện: TBC + rèn luyện ≥ khá, ≥15 tín chỉ đăng ký lần đầu, không bị kỷ luật, không vi phạm GDTC/QPAN; học bổng chính sách (cử tuyển, 80% lương cơ bản); học bổng từ quỹ bên ngoài. THƯỞNG THEO THÀNH TÍCH – khác #che-do-chinh-sach (miễn giảm / trợ cấp theo hoàn cảnh).",
+      "synonyms": [
+        "học bổng",
+        "KKHT",
+        "học bổng khuyến khích",
+        "học bổng chính sách",
+        "xét học bổng",
+        "tiêu chí học bổng",
+        "mức học bổng",
+        "tiền học bổng",
+        "học bổng loại giỏi",
+        "quỹ học bổng",
+        "được học bao nhiêu tiền"
+      ],
+      "source": "Phần 2.5. QUY ĐỊNH VỀ HỌC BỔNG (tr. 40-41, dòng 934-964) + Phần 3 › mục XIII.6. PHÁT HỌC BỔNG VÀ TRỢ CẤP XÃ HỘI (tr. 70, dòng 1821-1829)",
+      "page_range": [
+        40,
+        41,
+        70
+      ],
+      "parent": null
+    },
+    {
+      "id": "che-do-chinh-sach",
+      "hashtag": "#che-do-chinh-sach",
+      "description": "Miễn/giảm học phí (miễn 100%: người có công, khuyết tật, DTTS hộ nghèo, cử tuyển…; giảm 70%, 50%), trợ cấp ưu đãi (người có công, chi trả 2 lần/năm), trợ cấp xã hội (100.000–140.000 đ/tháng), hỗ trợ chi phí học tập (60% lương cơ sở, ≤10 tháng), hồ sơ giấy tờ. TRỢ CẤP THEO HOÀN CẢNH – khác #hoc-bong (thưởng theo thành tích).",
+      "synonyms": [
+        "học phí",
+        "miễn học phí",
+        "giảm học phí",
+        "miễn giảm",
+        "trợ cấp",
+        "trợ cấp ưu đãi",
+        "trợ cấp xã hội",
+        "hộ nghèo",
+        "hộ cận nghèo",
+        "người có công",
+        "thương binh",
+        "liệt sĩ",
+        "bệnh binh",
+        "khuyết tật",
+        "dân tộc thiểu số",
+        "hỗ trợ chi phí học tập",
+        "hồ sơ chính sách",
+        "giấy xác nhận chính sách"
+      ],
+      "source": "Phần 2.6. QUY ĐỊNH VỀ CHẾ ĐỘ CHÍNH SÁCH (tr. 42-45, dòng 965-1089) + Phần 3 › mục V. CẤP GIẤY XÁC NHẬN CHẾ ĐỘ CHÍNH SÁCH (tr. 53-54, dòng 1294-1311)",
+      "page_range": [
+        42,
+        45,
+        53,
+        54
+      ],
+      "parent": null
+    },
+    {
+      "id": "vay-von-tin-dung",
+      "hashtag": "#vay-von-tin-dung",
+      "description": "Vay vốn theo QĐ 157/2007/QĐ-TTg (sửa đổi QĐ 05/2022): đối tượng (mồ côi, hộ nghèo/cận nghèo/trung bình, khó khăn do tai nạn), mức tối đa 4.000.000 đ/tháng (từ 19/5/2022), lãi suất 6,6%/năm (0,55%/tháng), nợ quá hạn 130%, thời hạn vay – trả nợ, bắt đầu trả sau 12 tháng.",
+      "synonyms": [
+        "vay vốn",
+        "tín dụng",
+        "vay tiền",
+        "vay ngân hàng",
+        "NHCSXH",
+        "ngân hàng chính sách",
+        "lãi suất",
+        "trả nợ",
+        "nợ quá hạn",
+        "4 triệu/tháng",
+        "hợp đồng tín dụng",
+        "khoản vay",
+        "nợ gốc"
+      ],
+      "source": "Phần 2.7. QUY ĐỊNH VỀ VAY VỐN TÍN DỤNG (tr. 46-47, dòng 1090-1132) + Phần 3 › mục VI. CẤP GIẤY XÁC NHẬN VAY VỐN TÍN DỤNG (tr. 54, dòng 1312-1327)",
+      "page_range": [
+        46,
+        47,
+        54
+      ],
+      "parent": null
+    },
+    {
+      "id": "sinh-vien-ngoai-tru",
+      "hashtag": "#sinh-vien-ngoai-tru",
+      "description": "Quy chế ngoại trú (TT 27/2009/TT-BGDĐT) – quyền và nghĩa vụ; đăng ký tạm trú với công an và báo địa chỉ chỗ ở cho trường trong 30 ngày; thay đổi chỗ ở phải báo trong 20 ngày.",
+      "synonyms": [
+        "ngoại trú",
+        "ở trọ",
+        "thuê trọ",
+        "báo chỗ ở",
+        "đăng ký tạm trú",
+        "chỗ ở",
+        "không ở KTX",
+        "ở bên ngoài",
+        "công an phường",
+        "thay đổi chỗ ở",
+        "cư trú",
+        "hộ khẩu"
+      ],
+      "source": "Phần 2.8. QUY ĐỊNH QUẢN LÝ SINH VIÊN NGOẠI TRÚ (tr. 48, dòng 1133-1163) + Phần 3 › mục XI. THỦ TỤC ĐĂNG KÝ VÀ CẤP XÁC NHẬN CHO SV NGOẠI TRÚ (tr. 65, dòng 1646-1662)",
+      "page_range": [
+        48,
+        65
+      ],
+      "parent": null
+    },
+    {
+      "id": "tai-khoan-qldt",
+      "hashtag": "#tai-khoan-qldt",
+      "description": "Tài khoản trang Quản lý đào tạo (qldt.utc.edu.vn): tài khoản = Mã sinh viên, mật khẩu mặc định = ngày/tháng/năm sinh (dd/mm/yyyy); đăng ký email để lấy lại mật khẩu khi quên; các thao tác đăng nhập, đổi mật khẩu, và tra cứu thông tin đào tạo (đăng ký học, học phí, điểm, lịch thi) qua tài khoản này.",
+      "synonyms": [
+        "tài khoản QLĐT",
+        "qldt",
+        "quản lý đào tạo",
+        "quên mật khẩu",
+        "lấy lại mật khẩu",
+        "mật khẩu mặc định",
+        "đổi mật khẩu",
+        "đăng nhập qldt",
+        "mã sinh viên",
+        "đăng nhập",
+        "trang qldt",
+        "qldt.utc.edu.vn",
+        "reset mật khẩu",
+        "mật khẩu ngày tháng năm sinh"
+      ],
+      "source": "Phần 3 › mục I. TÀI KHOẢN QUẢN LÝ ĐÀO TẠO VÀ ĐĂNG KÝ HỌC (tr. 49-50, dòng 1166-1217)",
+      "page_range": [
+        49,
+        50
+      ],
+      "parent": null
+    },
+    {
+      "id": "danh-gia-co-van",
+      "hashtag": "#danh-gia-co-van",
+      "description": "Đánh giá cố vấn học tập (CVHT): 2 lần/1 năm học sau mỗi học kỳ; sinh viên đánh giá CVHT trên website sis.utc.edu.vn bằng email sinh viên; chỉ đánh giá khi CVHT đã hoàn thành họp lớp và đánh giá RLSV; không đánh giá CVHT sẽ bị trừ điểm đánh giá RLSV.",
+      "synonyms": [
+        "cố vấn",
+        "CVHT",
+        "cố vấn học tập",
+        "đánh giá cố vấn",
+        "đánh giá CVHT",
+        "họp lớp",
+        "trừ điểm RLSV",
+        "đánh giá giảng viên cố vấn"
+      ],
+      "source": "Phần 3 › mục III. ĐÁNH GIÁ CỐ VẤN HỌC TẬP (tr. 52, dòng 1244-1255)",
+      "page_range": [
+        52,
+        52
+      ],
+      "parent": null
+    },
+    {
+      "id": "the-sinh-vien",
+      "hashtag": "#the-sinh-vien",
+      "description": "Thẻ sinh viên: được cấp khi nhập học, dùng ra vào trường + dịch vụ thư viện; phải đeo thẻ tại trường, không cho mượn; cấp mới trong ngày nhập học, báo sai thông tin trong 5 ngày; cấp lại khi mất/hỏng/sai thông tin: nộp lệ phí (nếu lỗi SV), đăng ký tại P103-A9 sáng thứ 5-6, nhận sau 10 ngày; thẻ lỗi do trường thì miễn phí.",
+      "synonyms": [
+        "thẻ sinh viên",
+        "làm thẻ",
+        "cấp thẻ",
+        "cấp lại thẻ",
+        "mất thẻ",
+        "hỏng thẻ",
+        "làm lại thẻ",
+        "lệ phí làm lại thẻ",
+        "đeo thẻ",
+        "mượn thẻ",
+        "quyền lợi thẻ",
+        "thẻ ra vào trường"
+      ],
+      "source": "Phần 3 › mục VII. QUY TRÌNH CẤP THẺ SINH VIÊN (tr. 54-55, dòng 1328-1365)",
+      "page_range": [
+        54,
+        55
+      ],
+      "parent": null
+    },
+    {
+      "id": "hoat-dong-doan-hoi",
+      "hashtag": "#hoat-dong-doan-hoi",
+      "description": "Hoạt động sinh viên, tổ chức Đoàn – Hội: CLB/Đội/Nhóm (cộng điểm rèn luyện, điểm hoạt động Đoàn Hội, danh sách + đơn vị quản lý); Đoàn Thanh niên (chuyển sinh hoạt đoàn, điều kiện sinh hoạt, điều kiện kết nạp Đảng: điểm TB ≥2,5 hai kỳ cuối, không nợ môn); Hội Sinh viên (quy trình kết nạp hội viên, hội phí, liên hệ P206).",
+      "synonyms": [
+        "đoàn thanh niên",
+        "hội sinh viên",
+        "câu lạc bộ",
+        "CLB",
+        "hoạt động sinh viên",
+        "tổ chức đoàn hội",
+        "sinh hoạt đoàn",
+        "kết nạp đảng",
+        "đoàn viên",
+        "hội viên",
+        "hội phí",
+        "cộng điểm hoạt động",
+        "nghiên cứu khoa học sinh viên",
+        "robocon",
+        "tình nguyện",
+        "hiến máu"
+      ],
+      "source": "Phần 3 › mục VIII. HOẠT ĐỘNG SINH VIÊN - TỔ CHỨC ĐOÀN, HỘI (tr. 55-59, dòng 1366-1499)",
+      "page_range": [
+        55,
+        59
+      ],
+      "parent": null
+    },
+    {
+      "id": "thu-vien",
+      "hashtag": "#thu-vien",
+      "description": "Trung tâm Thông tin – Thư viện: địa chỉ tầng 6-7 nhà A8, P105 nhà N1, mở cửa T2-T6; tra cứu opac.utc.edu.vn; thẻ thư viện = thẻ SV; mượn ≤10 GT + 02 TLTK, kỳ mượn 1 (15/6-14/12, trả trước 14/3), kỳ mượn 2 (15/12-14/6, trả trước 14/9), TLTK mượn 30 ngày + gia hạn 15 ngày; phạt quá hạn 1/2 → 1 lần giá bìa; đọc tại chỗ TT, ngoại văn, luận văn, đồ án; dịch vụ tìm tin, nhà sách N1.",
+      "synonyms": [
+        "thư viện",
+        "mượn sách",
+        "mượn giáo trình",
+        "trả sách",
+        "quá hạn sách",
+        "phạt quá hạn",
+        "gia hạn",
+        "OPAC",
+        "đọc tại chỗ",
+        "tài liệu tham khảo",
+        "đồ án tốt nghiệp",
+        "luận văn",
+        "tạp chí",
+        "lib.utc.edu.vn",
+        "trung tâm thông tin"
+      ],
+      "source": "Phần 3 › mục IX. TRUNG TÂM THÔNG TIN - THƯ VIỆN (tr. 59-62, dòng 1500-1589)",
+      "page_range": [
+        59,
+        62
+      ],
+      "parent": null
+    },
+    {
+      "id": "ky-tuc-xa",
+      "hashtag": "#ky-tuc-xa",
+      "description": "Ký túc xá (số 99 Nguyễn Chí Thanh, Đống Đa): quy trình đăng ký nội trú SV khóa mới (giấy báo nhập học, CCCD/CMND, nhân khẩu, 03 ảnh 3x4) và SV năm 2+ (đơn, thẻ SV, CCCD); hợp đồng 1 năm, bàn giao tài sản; phí nội trú thu 2 lần/năm theo học kỳ, giá 120.000–1.245.000đ/tháng theo loại phòng 04/06/08 SV, có/không điều hòa; thanh lý trước hạn không hoàn phí.",
+      "synonyms": [
+        "ký túc xá",
+        "KTX",
+        "nội trú",
+        "ở nội trú",
+        "đăng ký KTX",
+        "thủ tục KTX",
+        "phí nội trú",
+        "giá phòng",
+        "hợp đồng nội trú",
+        "nhận phòng",
+        "trả phòng",
+        "điều hòa",
+        "99 Nguyễn Chí Thanh"
+      ],
+      "source": "Phần 3 › mục X. KÝ TÚC XÁ (tr. 62-64, dòng 1590-1645)",
+      "page_range": [
+        62,
+        64
+      ],
+      "parent": null
+    },
+    {
+      "id": "bao-hiem-y-te",
+      "hashtag": "#bao-hiem-y-te",
+      "description": "Chăm sóc y tế – bảo hiểm: khám sức khỏe nhập học + năm cuối tại Trạm Y tế (tầng 1 nhà B3, tầng 1 nhà A3-KTX); SV bắt buộc tham gia BHYT, nhà nước trợ giá 30%, cấp thẻ đầu năm; thủ tục khám bệnh, chuyển viện, giấy tờ mang theo (thẻ BHYT/VSSD, sổ KCB, CCCD); bảo hiểm thân thể đóng 1 lần/khóa, thanh toán thứ 3 hàng tuần tại P103-A9.",
+      "synonyms": [
+        "bảo hiểm y tế",
+        "BHYT",
+        "bảo hiểm",
+        "khám sức khỏe",
+        "khám định kỳ",
+        "trạm y tế",
+        "khám bệnh",
+        "chuyển viện",
+        "VSSD",
+        "VSSID",
+        "bảo hiểm thân thể",
+        "thanh toán bảo hiểm",
+        "trợ giá",
+        "sổ khám chữa bệnh",
+        "Bộ Y tế"
+      ],
+      "source": "Phần 3 › mục XII. CHĂM SÓC Y TẾ - THANH TOÁN BẢO HIỂM (tr. 65-67, dòng 1663-1716)",
+      "page_range": [
+        65,
+        67
+      ],
+      "parent": null
+    },
+    {
+      "id": "nop-hoc-phi",
+      "hashtag": "#nop-hoc-phi",
+      "description": "Nộp học phí qua Viettel Money: ưu điểm thanh toán online 24/7, phụ huynh trả được cho con; hướng dẫn cài app, đăng ký, liên kết ngân hàng, nạp tiền; các bước nộp học phí (mã SV, xác nhận tên/khoa); học phí dư do hủy tín chỉ được bù trừ hoặc trả tại P.TCKT; thắc mắc gọi 0243.766.9295.",
+      "synonyms": [
+        "học phí",
+        "nộp học phí",
+        "trả học phí",
+        "thanh toán học phí",
+        "Viettel Money",
+        "ViettelPay",
+        "học phí dư",
+        "nạp tiền",
+        "liên kết ngân hàng",
+        "phòng TCKT",
+        "tài chính kế toán",
+        "đóng học phí"
+      ],
+      "source": "Phần 3 › mục XIII.1-5. HỌC PHÍ - HƯỚNG DẪN NỘP QUA VIETTEL MONEY (tr. 67-70, dòng 1717-1820)",
+      "page_range": [
+        67,
+        70
+      ],
+      "parent": null,
+      "examples": [
+        "tiền nào đóng khi vào trường",
+        "đóng học phí qua ngân hàng nào"
+      ]
+    },
+    {
+      "id": "email-sinh-vien",
+      "hashtag": "#email-sinh-vien",
+      "description": "Email sinh viên: được cấp 01 email @lms.utc.edu.vn dạng tênsinhviênmãsinhviên, mật khẩu mặc định = mã sinh viên; đăng nhập qua mail.office365.com hoặc sis.utc.edu.vn, phân biệt hoa/thường, đổi mật khẩu lần đầu; quên mật khẩu → VP Hỗ trợ sinh viên P101-T1 (mang thẻ SV); email bắt buộc dùng cho đánh giá RLSV/CVHT, khảo sát, dịch vụ trực tuyến.",
+      "synonyms": [
+        "email sinh viên",
+        "email",
+        "lms.utc.edu.vn",
+        "mail",
+        "office365",
+        "quên mật khẩu email",
+        "đổi mật khẩu email",
+        "tài khoản email",
+        "hỗ trợ email",
+        "mã sinh viên email"
+      ],
+      "source": "Phần 3 › mục XIV. EMAIL SINH VIÊN (tr. 71, dòng 1831-1861)",
+      "page_range": [
+        71,
+        71
+      ],
+      "parent": null
+    },
+    {
+      "id": "app-eutc",
+      "hashtag": "#app-eutc",
+      "description": "App eUTC (Android CH Play / iOS App Store, từ khóa 'eUTC'): tài khoản đăng nhập = tài khoản LMS (MSteam); các phân hệ Tin tức, Lịch học (xem theo học kỳ), Bảng điểm sinh viên; đăng xuất qua nút Thoát ở góc phải màn hình.",
+      "synonyms": [
+        "eUTC",
+        "app",
+        "ứng dụng",
+        "cài đặt app",
+        "đăng nhập app",
+        "lịch học",
+        "bảng điểm",
+        "đăng xuất",
+        "CH play",
+        "App Store",
+        "MSteam",
+        "tài khoản LMS"
+      ],
+      "source": "Phần 3 › mục XV. TÀI LIỆU HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG APP eUTC (tr. 72-83, dòng 1862-2019)",
+      "page_range": [
+        72,
+        83
+      ],
+      "parent": null
+    },
+    {
+      "id": "quan-ly-ho-so",
+      "hashtag": "#quan-ly-ho-so",
+      "description": "Quản lý hồ sơ SV – thanh toán tài sản (TTTS) ra trường: nộp đủ hồ sơ + giấy chuyển nghĩa vụ quân sự + sinh hoạt Đoàn khi nhập học; rút hồ sơ sau tốt nghiệp theo thông báo (P101-T1, mang CCCD + bằng TC ĐH công chứng, KV0 thêm giấy giới thiệu; quá thời hạn bị hủy hồ sơ); TTTS cuối khóa: thanh toán nợ sách, tài chính, di chuyển NVQS, tra cứu tại sis.utc.edu.vn trước khi nhận bằng.",
+      "synonyms": [
+        "hồ sơ sinh viên",
+        "rút hồ sơ",
+        "trả hồ sơ",
+        "lấy hồ sơ",
+        "hủy hồ sơ",
+        "thanh toán tài sản",
+        "TTTS",
+        "trả nợ sách",
+        "nhận bằng",
+        "nợ tài chính",
+        "giấy chuyển nghĩa vụ quân sự",
+        "sổ đoàn"
+      ],
+      "source": "Phần 3 › mục XVI. QUẢN LÝ HỒ SƠ - THANH TOÁN TÀI SẢN RA TRƯỜNG (tr. 84, dòng 2020-2045)",
+      "page_range": [
+        84,
+        84
+      ],
+      "parent": null,
+      "examples": []
+    }
+  ]
+}

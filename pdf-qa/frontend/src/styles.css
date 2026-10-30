@@ -1,0 +1,7 @@
+body{ font-family: Arial, sans-serif; padding: 16px }
+.container{ max-width:900px; margin:0 auto }
+.nav{ display:flex; gap:16px; margin-bottom:16px }
+.upload-form{ margin-bottom:16px }
+.chat .messages{ border:1px solid #ddd; padding:8px; min-height:150px }
+.message{ margin-bottom:12px; padding-bottom:6px; border-bottom:1px dashed #eee }
+.answer{ white-space:pre-wrap }

@@ -1,0 +1,37 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Node / Next.js
+node_modules/
+.next/
+tsconfig.tsbuildinfo
+npm-debug.log*
+
+# Large archives & databases
+*.rar
+*.zip
+*.7z
+*.db
+*.sqlite3
+
+# Secrets & local config
+.env
+.env.local
+.env.*
+!.env.example
+
+# Local runtime data (uploaded files, auth store)
+pdf-qa/storage/pdfs/
+pdf-qa/backend/storage/pdfs/
+rag_api/users.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
