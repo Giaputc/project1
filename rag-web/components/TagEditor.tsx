@@ -76,19 +76,19 @@ export default function TagEditor({ chunkId, currentTags, isManual, onSaved }: P
   };
 
   return (
-    <div className="mt-2 rounded-lg border border-sky-500/30 bg-sky-500/5 p-2.5">
-      <div className="flex items-center gap-2 text-[11px] text-sky-300">
+    <div className="mt-2 rounded-control border border-border bg-background/60 p-2.5">
+      <div className="flex items-center gap-2 text-[11px] text-brand">
         <span>🏷 Gán tag cho {chunkId}</span>
         {isManual && (
-          <span className="rounded bg-sky-500/20 px-1.5 py-0.5 text-[10px] text-sky-200">
+          <span className="rounded bg-brand-soft px-1.5 py-0.5 text-[10px] text-brand">
             tag gán tay
           </span>
         )}
-        <span className="ml-auto text-zinc-500">{sel.size} tag đang chọn</span>
+        <span className="ml-auto text-muted-foreground">{sel.size} tag đang chọn</span>
       </div>
 
       {allTags === null && !msg && (
-        <p className="mt-2 text-xs text-zinc-500">Đang tải danh sách tag...</p>
+        <p className="mt-2 text-xs text-muted-foreground">Đang tải danh sách tag...</p>
       )}
 
       {allTags && (
@@ -103,8 +103,8 @@ export default function TagEditor({ chunkId, currentTags, isManual, onSaved }: P
                 title={`${t.description.slice(0, 100)}… · ${t.n_chunks_now} chunk`}
                 className={`rounded-full border px-2 py-0.5 font-mono text-[11px] transition disabled:opacity-50 ${
                   on
-                    ? "border-emerald-500/60 bg-emerald-500/20 text-emerald-200"
-                    : "border-zinc-700 bg-zinc-900 text-zinc-500 hover:border-zinc-500"
+                    ? "border-brand-border bg-brand-soft text-brand"
+                    : "border-input bg-card text-muted-foreground hover:border-input"
                 }`}
               >
                 #{t.id}
@@ -118,7 +118,7 @@ export default function TagEditor({ chunkId, currentTags, isManual, onSaved }: P
         <button
           onClick={save}
           disabled={busy}
-          className="rounded-lg bg-emerald-600 px-3 py-1 text-xs font-semibold text-white transition hover:bg-emerald-500 disabled:opacity-50"
+          className="rounded-control bg-brand px-3 py-1 text-xs font-medium text-brand-foreground transition hover:opacity-90 disabled:opacity-50"
         >
           {busy ? "⏳" : "💾 Lưu"}
         </button>
@@ -126,12 +126,12 @@ export default function TagEditor({ chunkId, currentTags, isManual, onSaved }: P
           <button
             onClick={reset}
             disabled={busy}
-            className="rounded-lg border border-zinc-600 px-3 py-1 text-xs text-zinc-300 transition hover:bg-zinc-800 disabled:opacity-50"
+            className="rounded-control border border-input px-3 py-1 text-xs text-foreground transition hover:bg-muted disabled:opacity-50"
           >
             ↺ Khôi phục tag rule
           </button>
         )}
-        {msg && <span className="text-[11px] text-zinc-400">{msg}</span>}
+        {msg && <span className="text-[11px] text-muted-foreground">{msg}</span>}
       </div>
     </div>
   );

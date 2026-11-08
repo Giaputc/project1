@@ -29,6 +29,7 @@ npm-debug.log*
 pdf-qa/storage/pdfs/
 pdf-qa/backend/storage/pdfs/
 rag_api/users.json
+data/danh_gia.json
 
 # OS / editor
 .DS_Store

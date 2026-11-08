@@ -8,13 +8,15 @@ import { adminRebuild, preheat, reloadCorpus } from "@/lib/api";
 
 interface Props {
   health: Health | null;
-  healthError: string | null;
   params: RParams;
   onChange: (p: RParams) => void;
   onReset: () => void;
   onClearChat: () => void;
   disabled: boolean;
 }
+
+const SECTION_LABEL =
+  "flex h-8 items-center px-1 text-xs font-medium text-muted-foreground/70";
 
 function Slider({
   label,
@@ -36,10 +38,10 @@ function Slider({
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between text-xs">
-        <span className="text-zinc-400" title={hint}>
+        <span className="text-muted-foreground" title={hint}>
           {label}
         </span>
-        <span className="font-mono text-emerald-400">{value}</span>
+        <span className="font-mono text-brand">{value}</span>
       </div>
       <input
         type="range"
@@ -48,15 +50,46 @@ function Slider({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-emerald-500"
+        className="w-full accent-brand"
+        aria-label={label}
       />
     </div>
   );
 }
 
+function ActionButton({
+  onClick,
+  disabled,
+  children,
+  variant = "quiet",
+  title,
+}: {
+  onClick: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+  variant?: "brand" | "warn" | "quiet";
+  title?: string;
+}) {
+  const cls =
+    variant === "brand"
+      ? "bg-brand text-brand-foreground hover:opacity-90"
+      : variant === "warn"
+        ? "border border-warning-border bg-warning-soft text-warning hover:bg-warning-soft/70"
+        : "border border-border bg-secondary text-secondary-foreground hover:bg-accent";
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      title={title}
+      className={`w-full rounded-control px-3 py-2 text-xs font-medium transition focus-visible:ring-3 disabled:opacity-50 motion-reduce:transition-none ${cls}`}
+    >
+      {children}
+    </button>
+  );
+}
+
 export default function ParamsPanel({
   health,
-  healthError,
   params,
   onChange,
   onReset,
@@ -95,7 +128,6 @@ export default function ParamsPanel({
   };
 
   const ollama = health?.ollama;
-  const corpus = health?.corpus;
   const models = ollama?.models?.filter((m) => !m.includes("embedding")) ?? [];
 
   const handleReload = async () => {
@@ -138,62 +170,15 @@ export default function ParamsPanel({
   };
 
   return (
-    <div className="flex h-full flex-col gap-5 overflow-y-auto p-4 text-sm">
-      {/* ---- Trạng thái ---- */}
-      <section className="space-y-2">
-        <h2 className="text-xs font-semibold tracking-widest text-zinc-500 uppercase">
-          Hệ thống
-        </h2>
-        <div className="space-y-1.5 rounded-lg border border-zinc-800 bg-zinc-900/60 p-3">
-          <div className="flex items-center gap-2">
-            <span
-              className={`h-2 w-2 rounded-full ${
-                ollama?.ok ? "bg-emerald-500" : "bg-red-500"
-              }`}
-            />
-            <span className="text-zinc-300">Ollama</span>
-            <span className="ml-auto text-xs text-zinc-500">
-              {ollama?.ok ? "online" : healthError ? "backend?" : "offline"}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span
-              className={`h-2 w-2 rounded-full ${
-                corpus?.loaded
-                  ? "bg-emerald-500"
-                  : corpus?.error
-                    ? "bg-red-500"
-                    : "bg-amber-500 animate-pulse"
-              }`}
-            />
-            <span className="text-zinc-300">Corpus</span>
-            <span className="ml-auto text-xs text-zinc-500">
-              {corpus?.loaded
-                ? "158 chunks ✓"
-                : corpus?.error
-                  ? "lỗi nạp"
-                  : "đang nạp..."}
-            </span>
-          </div>
-          {corpus?.error && (
-            <p className="text-xs text-red-400">{corpus.error}</p>
-          )}
-          {healthError && (
-            <p className="text-xs text-red-400">{healthError}</p>
-          )}
-        </div>
-      </section>
-
+    <div className="flex flex-col gap-4 p-1 text-sm">
       {/* ---- Model ---- */}
       <section className="space-y-2">
-        <h2 className="text-xs font-semibold tracking-widest text-zinc-500 uppercase">
-          Model
-        </h2>
+        <h2 className={SECTION_LABEL}>Model</h2>
         {models.length > 0 ? (
           <select
             value={params.model ?? ""}
             onChange={(e) => set({ model: e.target.value })}
-            className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-2 text-sm text-zinc-200"
+            className="w-full rounded-control border border-input bg-background px-2 py-1.5 text-xs text-foreground outline-none focus-visible:ring-3"
           >
             {models.map((m) => (
               <option key={m} value={m}>
@@ -206,25 +191,28 @@ export default function ParamsPanel({
             type="text"
             value={params.model ?? ""}
             onChange={(e) => set({ model: e.target.value })}
-            className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-2 font-mono text-xs text-zinc-200"
+            className="w-full rounded-control border border-input bg-background px-2 py-1.5 font-mono text-xs text-foreground outline-none focus-visible:ring-3"
+            aria-label="Tên model"
           />
         )}
-        <button
+        <ActionButton
           onClick={handlePreheat}
           disabled={preheatState.busy || disabled}
-          className="w-full rounded-lg bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-emerald-500 disabled:opacity-50"
+          variant="brand"
         >
           {preheatState.busy ? "⏳ Đang nạp..." : "⚡ Nạp model (preheat)"}
-        </button>
+        </ActionButton>
         {preheatState.msg && (
-          <p className="text-xs break-words text-zinc-400">{preheatState.msg}</p>
+          <p className="text-xs break-words text-muted-foreground">
+            {preheatState.msg}
+          </p>
         )}
-        <label className="flex cursor-pointer items-center gap-2 text-xs text-zinc-400">
+        <label className="flex cursor-pointer items-start gap-2 text-xs text-muted-foreground">
           <input
             type="checkbox"
             checked={params.use_llm !== false}
             onChange={(e) => set({ use_llm: e.target.checked })}
-            className="accent-emerald-500"
+            className="mt-0.5 accent-brand"
           />
           Gọi LLM trả lời (bỏ tick = chỉ xem tag + nguồn)
         </label>
@@ -232,9 +220,7 @@ export default function ParamsPanel({
 
       {/* ---- Tham số RAG ---- */}
       <section className="space-y-3">
-        <h2 className="text-xs font-semibold tracking-widest text-zinc-500 uppercase">
-          Tham số RAG
-        </h2>
+        <h2 className={SECTION_LABEL}>Tham số RAG</h2>
         <Slider
           label="temperature"
           value={params.temperature ?? 0.2}
@@ -298,50 +284,43 @@ export default function ParamsPanel({
       </section>
 
       {/* ---- Hành động ---- */}
-      <section className="space-y-2 border-t border-zinc-800 pt-3">
-        <button
+      <section className="space-y-2 border-t border-border pt-3">
+        <ActionButton
           onClick={handleRebuild}
           disabled={rebuildState.busy || reloadState.busy || disabled}
-          className="w-full rounded-lg border border-amber-600 bg-amber-900/30 px-3 py-2 text-xs font-semibold text-amber-300 transition hover:bg-amber-800/50 disabled:opacity-50"
+          variant="warn"
           title="Chạy rebuild.py: đọc lại file .md → cắt chunk → gắn tag → embed chunk đổi → nạp lại corpus"
         >
           {rebuildState.busy ? "⏳ Đang rebuild (.md → corpus)..." : "▶️ Rebuild từ file .md"}
-        </button>
+        </ActionButton>
         {rebuildState.msg && (
-          <p className="text-xs break-words text-zinc-400">{rebuildState.msg}</p>
+          <p className="text-xs break-words text-muted-foreground">
+            {rebuildState.msg}
+          </p>
         )}
         {rebuildState.log && (
-          <details className="rounded-lg border border-zinc-800 bg-zinc-950/60 p-2">
-            <summary className="cursor-pointer text-[11px] text-zinc-500">
+          <details className="rounded-control border border-border bg-background p-2">
+            <summary className="cursor-pointer text-[11px] text-muted-foreground">
               xem log rebuild
             </summary>
-            <pre className="mt-1 max-h-48 overflow-y-auto whitespace-pre-wrap text-[10px] leading-relaxed text-zinc-500">
+            <pre className="mt-1 max-h-48 overflow-y-auto whitespace-pre-wrap text-[10px] leading-relaxed text-muted-foreground">
               {rebuildState.log}
             </pre>
           </details>
         )}
-        <button
+        <ActionButton
           onClick={handleReload}
           disabled={reloadState.busy || disabled}
-          className="w-full rounded-lg border border-sky-700 bg-sky-900/30 px-3 py-2 text-xs text-sky-300 transition hover:bg-sky-800/50 disabled:opacity-50"
         >
-          {reloadState.busy ? "⏳ Đang nạp lại..." : "🔄 Nạp lại corpus (sau khi rebuild.py)"}
-        </button>
+          {reloadState.busy ? "⏳ Đang nạp lại..." : "🔄 Nạp lại corpus (sau rebuild)"}
+        </ActionButton>
         {reloadState.msg && (
-          <p className="text-xs break-words text-zinc-400">{reloadState.msg}</p>
+          <p className="text-xs break-words text-muted-foreground">
+            {reloadState.msg}
+          </p>
         )}
-        <button
-          onClick={onReset}
-          className="w-full rounded-lg border border-zinc-700 px-3 py-2 text-xs text-zinc-400 transition hover:bg-zinc-800"
-        >
-          ↺ Về mặc định
-        </button>
-        <button
-          onClick={onClearChat}
-          className="w-full rounded-lg border border-zinc-700 px-3 py-2 text-xs text-zinc-400 transition hover:bg-zinc-800"
-        >
-          🗑 Xoá lịch sử chat
-        </button>
+        <ActionButton onClick={onReset}>↺ Về mặc định</ActionButton>
+        <ActionButton onClick={onClearChat}>🗑 Xoá lịch sử chat</ActionButton>
       </section>
     </div>
   );

@@ -9,6 +9,8 @@ Endpoints:
   POST /api/ask/stream  — SSE: event meta → token* → done (hoặc error)
   POST /api/preheat     — [ADMIN] nạp model vào RAM (~60s)
   POST /api/corpus/reload — [ADMIN] nạp lại corpus sau rebuild.py
+  POST /api/feedback    — Đánh giá câu trả lời (↑↓ + sao + nhận xét) → D4
+  GET  /api/feedback/stats — [ADMIN] tổng hợp đánh giá, trung bình theo tag
 
   [ADMIN] GET  /api/admin/tags              — danh sách tag (định nghĩa + số chunk)
   [ADMIN] POST /api/admin/tags              — thêm tag mới
@@ -34,6 +36,7 @@ import threading
 import time
 from pathlib import Path
 from typing import Any, Optional
+from uuid import uuid4
 
 import httpx
 from fastapi import Depends, FastAPI, Header, HTTPException
@@ -42,6 +45,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from rag_api import auth
+from rag_api import feedback as fb
 from rag_api import rag_engine as eng
 
 OLLAMA = "http://localhost:11434"
@@ -107,6 +111,19 @@ class TagDefRequest(BaseModel):
     description: Optional[str] = None
     synonyms: Optional[list[str]] = None
     examples: Optional[list[str]] = None
+
+
+class FeedbackRequest(BaseModel):
+    """Đánh giá câu trả lời — nghiệp vụ 4.0 (kho D4)."""
+
+    answer_id: str = Field(..., min_length=1, max_length=64)
+    question: str = Field("", max_length=2000)
+    vote: str = Field(..., pattern=r"^(up|down)$")
+    so_sao: int = Field(..., ge=1, le=5)
+    nhan_xet: Optional[str] = Field(None, max_length=2000)
+    answer_preview: Optional[str] = Field(None, max_length=500)
+    tag: Optional[str] = Field(None, max_length=64)
+    sources: Optional[list[str]] = None
 
 
 def _effective_params(req: AskRequest, session: Optional[dict]) -> dict[str, Any]:
@@ -281,10 +298,14 @@ async def ask_stream(req: AskRequest, session: Optional[dict] = Depends(auth.cur
     loop.run_in_executor(None, _producer)
 
     async def gen():
+        # ID ổn định cho 1 câu trả lời — client gắn đánh giá vào đây
+        answer_id = uuid4().hex[:12]
         while True:
             ev = await queue.get()
             if ev is None:
                 break
+            if isinstance(ev, dict) and ev.get("type") in ("meta", "done"):
+                ev = {**ev, "answer_id": answer_id}
             yield _sse(ev)
 
     return StreamingResponse(
@@ -294,6 +315,38 @@ async def ask_stream(req: AskRequest, session: Optional[dict] = Depends(auth.cur
                  "Connection": "keep-alive",
                  "X-Accel-Buffering": "no"},
     )
+
+
+# ---------------------------------------------------------------
+# Feedback — Đánh giá câu trả lời (nghiệp vụ 4.0 / D4)
+# ---------------------------------------------------------------
+@app.post("/api/feedback")
+def api_feedback(req: FeedbackRequest,
+                 session: Optional[dict] = Depends(auth.current_role)):
+    """Khách và admin đều đánh giá được (mọi use case include Đăng nhập)."""
+    try:
+        rec = fb.add_feedback(
+            answer_id=req.answer_id,
+            question=req.question,
+            vote=req.vote,
+            so_sao=req.so_sao,
+            nhan_xet=req.nhan_xet,
+            answer_preview=req.answer_preview,
+            tag=req.tag,
+            sources=req.sources,
+            role=(session or {}).get("role"),
+            user=(session or {}).get("display"),
+        )
+    except ValueError as e:
+        return {"ok": False, "error": str(e)}
+    return {"ok": True, "feedback": rec}
+
+
+@app.get("/api/feedback/stats")
+def api_feedback_stats(limit: int = 200,
+                       _: dict = Depends(auth.require_admin)):
+    """Tổng hợp đánh giá cho admin (báo cáo 6.0)."""
+    return {"ok": True, "stats": fb.stats(), "items": fb.list_feedback(limit)}
 
 
 # ---------------------------------------------------------------

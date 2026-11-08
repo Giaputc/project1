@@ -32,6 +32,7 @@ export interface Source {
 
 export interface MetaEvent {
   type: "meta";
+  answer_id?: string;
   question: string;
   decision: "ANSWER" | "ASK_BACK" | "OUT_OF_SCOPE";
   why: string;
@@ -49,6 +50,7 @@ export interface MetaEvent {
 
 export interface DoneEvent {
   type: "done";
+  answer_id?: string;
   answer: string | null;
   stats: {
     load_ms?: number;
@@ -287,6 +289,69 @@ export async function reloadCorpus(): Promise<{
   });
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return r.json();
+}
+
+// ===============================================================
+// FEEDBACK — Đánh giá câu trả lời (nghiệp vụ 4.0 / D4)
+// ===============================================================
+export interface FeedbackInput {
+  answer_id: string;
+  question: string;
+  vote: "up" | "down";
+  so_sao: number;
+  nhan_xet?: string | null;
+  answer_preview?: string | null;
+  tag?: string | null;
+  sources?: string[];
+}
+
+export interface FeedbackStats {
+  n: number;
+  avg_stars: number;
+  up: number;
+  down: number;
+  ratio_up: number;
+  with_comment: number;
+  per_tag: { tag: string; n: number; avg_stars: number }[];
+  recent: {
+    question: string;
+    so_sao: number;
+    vote: string;
+    nhan_xet: string | null;
+    tag: string | null;
+    created_at: string;
+  }[];
+}
+
+/** Gửi đánh giá — khách và admin đều gửi được */
+export async function submitFeedback(
+  body: FeedbackInput,
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const r = await fetch(`${API_URL}/api/feedback`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+      body: JSON.stringify(body),
+    });
+    const j = await r.json().catch(() => ({ ok: false }));
+    if (!r.ok) {
+      return { ok: false, error: j.detail ?? `HTTP ${r.status}` };
+    }
+    return { ok: !!j.ok, error: j.error };
+  } catch (e) {
+    return { ok: false, error: String(e) };
+  }
+}
+
+/** Tổng hợp đánh giá — admin */
+export async function adminFeedbackStats(): Promise<FeedbackStats | null> {
+  try {
+    const r = await adminFetch("/api/feedback/stats");
+    if (!r.ok) return null;
+    return (r as { stats?: FeedbackStats }).stats ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /**
