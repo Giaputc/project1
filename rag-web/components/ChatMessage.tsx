@@ -11,10 +11,20 @@ export interface ChatItem {
   id: string;
   role: "user" | "assistant";
   content: string;             // text trả lời (streaming dần)
+  question?: string;           // câu hỏi gốc (client biết khi gửi — cần cho D3)
   meta?: MetaEvent;
   done?: DoneEvent;
   error?: string;
   streaming?: boolean;
+}
+
+/** Payload chuyển câu hỏi cho cán bộ (nghiệp vụ 3.0 / D3) */
+export interface TransferPayload {
+  question: string;
+  answer_id?: string | null;
+  tag?: string | null;
+  reason: string;
+  ai_answer?: string | null;
 }
 
 const DECISION_STYLE: Record<string, { label: string; cls: string }> = {
@@ -156,9 +166,21 @@ interface Props {
   onPickTag?: (tag: string, question: string) => void;
   pickingDisabled?: boolean;
   admin?: boolean;
+  /** Chuyển câu hỏi sang hàng chờ cán bộ (D3) */
+  onTransfer?: (p: TransferPayload) => Promise<{ ok: boolean; error?: string }>;
 }
 
-export default function ChatMessage({ item, onPickTag, pickingDisabled, admin }: Props) {
+export default function ChatMessage({
+  item,
+  onPickTag,
+  pickingDisabled,
+  admin,
+  onTransfer,
+}: Props) {
+  // hooks phải gọi trước nhánh return của user message
+  const [transfer, setTransfer] = useState<"idle" | "sending" | "done">("idle");
+  const [transferErr, setTransferErr] = useState<string | null>(null);
+
   const isUser = item.role === "user";
 
   if (isUser) {
@@ -173,6 +195,7 @@ export default function ChatMessage({ item, onPickTag, pickingDisabled, admin }:
 
   const dec = item.meta ? DECISION_STYLE[item.meta.decision] : null;
   const answerId = item.done?.answer_id ?? item.meta?.answer_id;
+  const question = item.question ?? item.meta?.question ?? "";
   // chỉ đánh giá khi có trả lời thật (không lỗi, không stream, không bỏ qua LLM)
   const canFeedback =
     !!answerId &&
@@ -181,6 +204,34 @@ export default function ChatMessage({ item, onPickTag, pickingDisabled, admin }:
     !!item.done &&
     !item.done.skipped_llm &&
     !!(item.done.answer ?? item.content);
+
+  // lý do chuyển — suy ra từ quyết định của router
+  const transferReason = item.error
+    ? "Model lỗi hoặc quá thời gian"
+    : item.meta?.decision === "OUT_OF_SCOPE"
+      ? "AI trả lời ngoài tài liệu"
+      : item.meta?.decision === "ASK_BACK"
+        ? "Câu hỏi mơ hồ — AI hỏi lại, sinh viên chưa chọn được tag"
+        : "Sinh viên thấy câu trả lời chưa phù hợp";
+
+  const doTransfer = async () => {
+    if (!onTransfer || transfer === "sending" || !question) return;
+    setTransfer("sending");
+    setTransferErr(null);
+    const r = await onTransfer({
+      question,
+      answer_id: answerId ?? null,
+      tag: item.meta?.top_tag ?? null,
+      reason: transferReason,
+      ai_answer: item.content || null,
+    });
+    if (r.ok) {
+      setTransfer("done");
+    } else {
+      setTransfer("idle");
+      setTransferErr(r.error ?? "Không chuyển được câu hỏi");
+    }
+  };
 
   return (
     <div className="flex justify-start">
@@ -197,6 +248,12 @@ export default function ChatMessage({ item, onPickTag, pickingDisabled, admin }:
               {item.meta.forced_tag && (
                 <span className="rounded-full border border-brand-border bg-brand-soft px-2 py-0.5 text-[10px] font-semibold tracking-wide text-brand">
                   🏷 #{item.meta.forced_tag}
+                </span>
+              )}
+              {item.meta.handoff && (
+                <span className="rounded-full border border-warning-border bg-warning-soft px-2 py-0.5 text-[10px] font-semibold tracking-wide text-warning"
+                  title={`Đã tự động chuyển cho cán bộ (${item.meta.handoff.id})`}>
+                  ⟶ ĐÃ CHUYỂN CÁN BỘ
                 </span>
               )}
               <span className="text-[11px] text-muted-foreground">
@@ -261,6 +318,29 @@ export default function ChatMessage({ item, onPickTag, pickingDisabled, admin }:
           {/* Nguồn + timing */}
           {item.meta && <Sources meta={item.meta} admin={admin} />}
           {item.meta && item.done && <StatsLine meta={item.meta} done={item.done} />}
+
+          {/* Chuyển câu hỏi cho cán bộ — nghiệp vụ 3.0 / D3 */}
+          {!item.streaming && question && (
+            <div className="mt-3 border-t border-border pt-2.5">
+              {transfer === "done" ? (
+                <p className="text-[11px] text-brand">
+                  ✓ Đã chuyển cho cán bộ tư vấn — cán bộ sẽ trả lời trực tiếp.
+                </p>
+              ) : transferErr ? (
+                <p className="text-[11px] text-destructive">⚠ {transferErr}</p>
+              ) : (
+                <button
+                  onClick={() => void doTransfer()}
+                  disabled={transfer === "sending" || pickingDisabled}
+                  className="text-[11px] text-muted-foreground underline decoration-border underline-offset-2 transition hover:text-brand focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none"
+                >
+                  {transfer === "sending"
+                    ? "Đang chuyển..."
+                    : "⟶ Chuyển câu hỏi cho cán bộ tư vấn"}
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Đánh giá câu trả lời — nghiệp vụ 4.0 / D4 */}

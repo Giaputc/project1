@@ -55,6 +55,7 @@ export default function FeedbackBar({
       so_sao: finalStars,
       nhan_xet: (patch.nhan_xet ?? note).trim() || null,
       answer_preview: answer.slice(0, 500),
+      answer, // bản đầy đủ — dùng khi cán bộ rà soát & đưa ngược vào tri thức
       tag: tag ?? null,
       sources,
     };

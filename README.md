@@ -76,7 +76,13 @@ Mở `http://localhost:3000` → trang `/login`:
   (đổi bằng env `ADMIN_USERNAME` / `ADMIN_PASSWORD` khi file chưa tồn tại,
   hoặc sửa trực tiếp file).
 - Khách bấm **"👤 Vào với tư cách Khách"** — không cần mật khẩu.
+- **Phiên chat tách riêng theo danh tính**: admin/cán bộ/sinh viên dùng `username`;
+  khách dùng `khach_<guest_id>` (`guest_id` lưu ở `localStorage.rag_guest_id`).
+  `localStorage.rag_chat_<username>` nhớ phiên đang mở của từng người, nên đổi
+  tài khoản không thấy chat của người trước. Lịch sử D1 & thông báo D5 cũng lọc theo
+  `username` tương ứng.
 - Token lưu localStorage (`rag_session`), hạn 24h; header `Authorization: Bearer <token>`.
+  Session cũ không có `username` sẽ bị yêu cầu đăng nhập lại.
 - An toàn **ở lớp server**: request guest không token → `params` bị bỏ qua
   bất kể client gửi gì; endpoint admin trả 401/403.
 
@@ -94,18 +100,69 @@ Mở `http://localhost:3000` → trang `/login`:
 - Thêm tag mới / xoá tag được luôn (tag mới chưa có chunk nào mang → admin gán
   chunk tay; `rebuild.py` chỉ WARN nếu số tag lệch chuẩn rule).
 
+## Luồng nghiệp vụ theo `data/nghiep_vu.docx`
+
+Các luồng đã phủ (JSON-lines trong `data/`, không cần DB 13 bảng):
+
+| Nghiệp vụ | Kho | Nơi triển khai |
+|---|---|---|
+| 1.0 Tiếp nhận & phân loại câu hỏi, lịch sử phiên | D1 `data/lich_su.json` | `rag_api/history.py` |
+| 2.0 Truy xuất RAG + sinh trả lời | D2 `data/corpus/` | `rag_api/rag_engine.py` |
+| 3.0 Hàng chờ cán bộ (tự động khi `OUT_OF_SCOPE` / hết ngữ cảnh / LLM lỗi, hoặc sinh viên bấm tay) | D3 `data/hang_cho.json` | `rag_api/hangcho.py`, hook trong `main.py` |
+| 3.0 Thông báo cho sinh viên / cán bộ | D5 `data/thong_bao.jsonl` | `rag_api/notifications.py`, chuông 🔔 trên header |
+| 4.0 Đánh giá → cán bộ rà soát → admin phê duyệt → ngược vào tri thức | D4 `data/danh_gia.json`, `data/ra_soat.jsonl` | `rag_api/feedback.py`, `rag_api/reviews.py` |
+| 5.0 Cán bộ đề xuất tài liệu → admin duyệt → embed + index | D3 `data/tri_thuc.jsonl` → D2 | `rag_api/knowledge.py`, `_inject_approved()` |
+| 6.0 Quản lý người dùng/phân quyền, chủ đề/phòng ban, báo cáo | D5/D6 `data/chu_de.jsonl` | `rag_api/auth.py`, `catalog.py`, `reports.py` |
+
+Chi tiết:
+
+- **Chuyển cán bộ tự động**: ngay khi event `meta` báo `OUT_OF_SCOPE` (hoặc không có
+  nguồn) / event `error` (LLM lỗi, quá thời gian), backend tạo 1 item hàng chờ, gắn
+  `meta.handoff` vào SSE và gửi thông báo cho cán bộ. Cùng câu hỏi trong 10 phút
+  không tạo trùng. Sinh viên vẫn có nút "⟶ Chuyển câu hỏi cho cán bộ" trong khung
+  trả lời. `ASK_BACK` không tự chuyển (chờ user chọn hashtag).
+- **Học từ phản hồi**: đánh giá `↑` + ≥ 4 sao → tự động vào hàng rà soát; cán bộ
+  đọc/sửa đáp án, admin phê duyệt → chunk `TL-...` được embed (cache
+  `bosung_embeds`) và nạp vào D2. Không ghi đè `chunks.jsonl` của `rebuild.py`.
+- **Tài liệu đề xuất**: cán bộ nhập tiêu đề/nội dung/chủ đề → admin duyệt → tự
+  `reload_corpus()` để tài liệu có hiệu lực ngay. Có thể bấm "↻ Nạp lại corpus"
+  trong panel nếu cần.
+- **Phân quyền**: ma trận `auth.PERMISSIONS` — admin (mọi quyền), cán bộ
+  (hàng chờ, đề xuất & rà soát, xem báo cáo), sinh viên/guest (chat, đánh giá,
+  lịch sử, thông báo). Đổi role/mật khẩu trong admin → token cũ hết hạn.
+- **Báo cáo**: `/api/admin/reports?days=7` gom D1 (tin nhắn, phiên, quyết định
+  router, câu hỏi phổ biến), D4 (điểm, theo tag), D3 (hàng chờ, cán bộ trả lời),
+  D5 (số người dùng), D6 (chủ đề).
+
+Tài khoản mẫu: `admin/admin123` (quản trị), `canbo/canbo123` (cán bộ tư vấn).
+Có thể tạo sinh viên trong tab "Người dùng & phân quyền".
+
 ## API
 
 | Method | Path | Quyền | Mô tả |
 |---|---|---|---|
 | GET  | `/health` | public | trạng thái Ollama + corpus + default params |
-| POST | `/api/auth/login` | public | `{username,password}` → `{token,role,display}` |
-| POST | `/api/auth/guest` | public | phát token role `guest` |
+| POST | `/api/auth/login` | public | `{username,password}` → `{token,username,role,display}` |
+| POST | `/api/auth/guest` | public | phát token `guest`; body tuỳ chọn `{"guest_id":"..."}` → username `khach_<id>` riêng từng client |
 | POST | `/api/ask` | all | hỏi — JSON đầy đủ (meta + answer + stats) |
 | POST | `/api/ask/stream` | all | hỏi — SSE: `meta` → `token`* → `done` (hoặc `error`) |
 | POST | `/api/preheat` | admin | nạp model vào RAM (~60s, chạy 1 lần) |
 | POST | `/api/corpus/load` | public | ép nạp corpus (block) |
 | POST | `/api/corpus/reload` | admin | nạp lại corpus + embed cache từ disk (sau `rebuild.py`) |
+| POST | `/api/feedback` | all | đánh giá ↑↓ + sao + nhận xét (≥4 sao → hàng rà soát) |
+| GET | `/api/feedback/stats` | admin | thống kê đánh giá |
+| POST | `/api/history` · GET/DELETE `/api/history/{sid}` | login | lịch sử phiên chat (D1) |
+| GET | `/api/history/sessions` | login | danh sách phiên của chính mình |
+| POST | `/api/hangcho` | login | chuyển câu hỏi cho cán bộ (D3) |
+| GET | `/api/hangcho` · POST `/api/hangcho/{id}/reply` | cán bộ/admin | hàng chờ + trả lời (→ thông báo) |
+| GET | `/api/notifications` · POST `/api/notifications/{id}/read` | login | thông báo (D5) |
+| POST | `/api/knowledge` · GET `/api/knowledge` | cán bộ/admin | đề xuất & xem tài liệu tri thức |
+| POST | `/api/knowledge/{id}/review` | admin | duyệt/từ chối → embed + index |
+| GET | `/api/reviews` · POST `/api/reviews/{id}/review` | cán bộ/admin | rà soát đáp án |
+| POST | `/api/reviews/{id}/decide` | admin | phê duyệt → đưa ngược vào tri thức |
+| GET/POST/PUT/DELETE | `/api/admin/topics` | admin | chủ đề / phòng ban (D6) |
+| GET/POST/PUT/DELETE | `/api/admin/users` | admin | người dùng & phân quyền (D5) |
+| GET | `/api/admin/reports?days=` | cán bộ/admin | báo cáo tổng hợp (6.0) |
 | GET | `/api/admin/tags` | admin | danh sách tag + số chunk (rule / hiện tại) |
 | POST | `/api/admin/tags` | admin | thêm tag mới |
 | PUT | `/api/admin/tags/{id}` | admin | sửa description / synonyms / examples |
@@ -141,6 +198,10 @@ curl -N -X POST localhost:8000/api/ask/stream \
   trạng thái Ollama + corpus, nạp lại corpus, xoá lịch sử, nút **"🏷 Quản lý
   định nghĩa hashtag"**.
 - **Cột trái (khách)**: chỉ trạng thái hệ thống + xoá lịch sử (không tham số).
+- **Cột trái (cán bộ)**: "Hàng chờ câu hỏi" (trả lời sinh viên),
+  "Tri thức & phê duyệt" (đề xuất tài liệu, rà soát đáp án).
+- **Cột trái (admin)**: thêm "Người dùng & phân quyền", "Báo cáo hệ thống".
+- **Header**: chuông 🔔 thông báo (câu trả lời cán bộ, tài liệu duyệt, hàng chờ mới).
 - **Chat**: trả lời streaming từng token, badge quyết định
   (`ANSWER` / `ASK_BACK` / `OUT_OF_SCOPE`), **chip hashtag bấm được khi mơ hồ**
   (bấm tag → tự gửi lại cùng câu hỏi với `force_tag`, trả lời strict theo tag

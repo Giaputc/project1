@@ -133,6 +133,44 @@ def score_tags_ext(q_vec: np.ndarray, tags: list, tag_mat: np.ndarray,
 
 
 # ---------------------------------------------------------------
+# Tri thức bổ sung đã phê duyệt → tiêm vào D2 (embedding riêng, cache riêng)
+# ---------------------------------------------------------------
+def _inject_approved(loaders: tuple) -> tuple:
+    """Thêm chunk tài liệu/đáp án đã duyệt vào corpus đang nạp.
+
+    Không ghi vào chunks.jsonl (rebuild.py sinh lại từ .md), không dùng chung
+    cache chunk_embeds — dùng cache bosung_embeds riêng theo id tri thức.
+    """
+    from rag_api import knowledge as kn
+
+    chunks, tags, tag_mat, ch_mat, bm25 = loaders
+    extra = kn.approved_chunks()
+    if not extra:
+        return loaders
+
+    valid = {t["id"] for t in tags}
+    extra = [c for c in extra if not c.get("tags") or c["tags"][0] in valid]
+    if not extra:
+        return loaders
+
+    cache = de.load_cache("bosung_embeds")
+    missing = [c for c in extra if c["id"] not in cache]
+    if missing:
+        for i in range(0, len(missing), 32):
+            wave = missing[i:i + 32]
+            for c, v in zip(wave, de.embed([c["text"] for c in wave])):
+                cache[c["id"]] = v.tolist()
+            de.save_cache("bosung_embeds", cache)   # checkpoint
+
+    chunks = list(chunks) + extra
+    vecs = np.asarray([cache[c["id"]] for c in extra], dtype=np.float32)
+    ch_mat = np.vstack([ch_mat, vecs])
+    tokenized = [re.findall(r"\w+", c["text"].lower()) for c in chunks]
+    bm25 = de.BM25Okapi(tokenized)
+    return chunks, tags, tag_mat, ch_mat, bm25
+
+
+# ---------------------------------------------------------------
 # Load corpus (1 lần)
 # ---------------------------------------------------------------
 def ensure_loaded(blocking: bool = True) -> bool:
@@ -147,6 +185,7 @@ def ensure_loaded(blocking: bool = True) -> bool:
         try:
             t0 = time.time()
             loaders = de.load_all()
+            loaders = _inject_approved(loaders)     # tài liệu/đáp án đã duyệt (D3→D2)
             _merge_manual_tags(loaders[0])          # tag admin gán tay (ghi đè rule)
             _state["loaders"] = loaders
             _state["exemplars"] = _load_exemplars(loaders[1])

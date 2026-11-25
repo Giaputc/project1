@@ -30,6 +30,12 @@ pdf-qa/storage/pdfs/
 pdf-qa/backend/storage/pdfs/
 rag_api/users.json
 data/danh_gia.json
+data/lich_su.json
+data/hang_cho.json
+data/thong_bao.jsonl
+data/tri_thuc.jsonl
+data/ra_soat.jsonl
+data/chu_de.jsonl
 
 # OS / editor
 .DS_Store

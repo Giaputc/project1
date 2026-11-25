@@ -8,15 +8,34 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import ParamsPanel from "@/components/ParamsPanel";
-import ChatMessage, { type ChatItem } from "@/components/ChatMessage";
+import ChatMessage, {
+  type ChatItem,
+  type TransferPayload,
+} from "@/components/ChatMessage";
 import TagManager from "@/components/TagManager";
 import FeedbackStats from "@/components/FeedbackStats";
+import HangChoPanel from "@/components/HangChoPanel";
+import NotificationBell from "@/components/NotificationBell";
+import KnowledgePanel from "@/components/KnowledgePanel";
+import AdminPanel, { type Tab as AdminTab } from "@/components/AdminPanel";
 import {
+  addHangCho,
   askStream,
   clearSession,
+  deleteHistorySession,
   fetchHealth,
   getSession,
+  listHangCho,
+  listHistorySessions,
+  loadHistorySession,
+  readActiveSid,
+  saveActiveSid,
+  saveHistoryItem,
+  type DoneEvent,
   type Health,
+  type HangChoCounts,
+  type HistorySession,
+  type MetaEvent,
   type RParams,
   type Session,
 } from "@/lib/api";
@@ -46,6 +65,14 @@ const SUGGESTIONS = [
 let uid = 0;
 const nextId = () => `m${++uid}`;
 
+/** id phiên chat — randomUUID trên trình duyệt hiện đại, fallback otherwise */
+const makeSid = () =>
+  typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `s${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+
+const EMPTY_QUEUE: HangChoCounts = { cho_xu_ly: 0, da_tra_loi: 0, tong: 0 };
+
 export default function Page() {
   const router = useRouter();
   const [session, setSessionState] = useState<Session | null>(null);
@@ -61,11 +88,28 @@ export default function Page() {
   const [navOpen, setNavOpen] = useState(true);
   const [drawer, setDrawer] = useState(false);
 
+  // ---- Lịch sử câu hỏi (nghiệp vụ 1.0 / D1) ----
+  // activeSid khởi tạo rỗng: randomUUID không được gọi lúc prerender (SSG) —
+  // được sinh trong event handler (send/newSession/openSession) thay vì render.
+  const [activeSid, setActiveSid] = useState<string>("");
+  const [history, setHistory] = useState<HistorySession[]>([]);
+  const [loadingSid, setLoadingSid] = useState<string | null>(null);
+
+  // ---- Hàng chờ cán bộ (nghiệp vụ 3.0 / D3) ----
+  const [queueOpen, setQueueOpen] = useState(false);
+  const [queueCounts, setQueueCounts] = useState<HangChoCounts>(EMPTY_QUEUE);
+
+  // ---- Tri thức & quản trị (nghiệp vụ 4.0/5.0/6.0) ----
+  const [knowledgeOpen, setKnowledgeOpen] = useState(false);
+  const [adminOpen, setAdminOpen] = useState(false);
+  const [adminTab, setAdminTab] = useState<AdminTab>("users");
+
   const abortRef = useRef<AbortController | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const isAdmin = session?.role === "admin";
+  const isStaff = session?.role === "admin" || session?.role === "can_bo";
 
   // ---- AuthGuard: chưa đăng nhập → /login ----
   useEffect(() => {
@@ -103,6 +147,46 @@ export default function Page() {
     };
   }, [pollHealth, authChecked]);
 
+  // ---- Nạp danh sách phiên + số liệu hàng chờ ----
+  const refreshHistory = useCallback(async () => {
+    const rows = await listHistorySessions();
+    setHistory(rows);
+    return rows;
+  }, []);
+
+  const refreshQueue = useCallback(async () => {
+    const r = await listHangCho();
+    setQueueCounts(r.counts);
+  }, []);
+
+  // Khôi phục đúng phiên của danh tính hiện tại (admin / canbo / sv / guest riêng)
+  useEffect(() => {
+    if (!authChecked || !session) return;
+    let cancelled = false;
+    const t = setTimeout(() => {
+      void refreshHistory().then(async (rows) => {
+        void refreshQueue();
+        const saved = readActiveSid(session.username);
+        if (cancelled || !saved) return;
+        if (!rows.some((h) => h.session_id === saved)) return;
+        const loaded = await loadHistorySession(saved);
+        if (cancelled) return;
+        setActiveSid(saved);
+        setItems(loaded);
+      });
+    }, 0);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [authChecked, session, refreshHistory, refreshQueue]);
+
+  // Mỗi danh tính nhớ 1 phiên đang mở — không đè phiên của role/user khác
+  useEffect(() => {
+    if (!session?.username || !activeSid) return;
+    saveActiveSid(session.username, activeSid);
+  }, [session, activeSid]);
+
   // ---- Auto scroll khi có token mới ----
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
@@ -119,54 +203,93 @@ export default function Page() {
       setInput("");
       setBusy(true);
 
+      // phiên đầu tiên → sinh id ngay tại event handler (không lúc prerender)
+      const sid = activeSid || makeSid();
+      if (!activeSid) setActiveSid(sid);
       const userId = nextId();
       const botId = nextId();
+      const displayQ = forceTag ? `${q}  🏷#${forceTag}` : q;
       setItems((prev) => [
         ...prev,
-        { id: userId, role: "user", content: forceTag ? `${q}  🏷#${forceTag}` : q },
-        { id: botId, role: "assistant", content: "", streaming: true },
+        { id: userId, role: "user", content: displayQ },
+        {
+          id: botId,
+          role: "assistant",
+          content: "",
+          streaming: true,
+          question: q,
+        },
       ]);
+      // lưu tin nhắn user ngay (phiên mới cũng kịp có mặt trong danh sách)
+      void saveHistoryItem(sid, {
+        id: userId,
+        role: "user",
+        content: displayQ,
+      });
 
       const ac = new AbortController();
       abortRef.current = ac;
+
+      // bản sao để lưu lịch sử — tránh đọc state đã set
+      let acc = "";
+      let metaEv: MetaEvent | undefined;
+      let doneEv: DoneEvent | undefined;
+      let errEv: string | undefined;
+      let aborted = false;
 
       try {
         // khách gửi {} — server tự dùng default (an toàn cả lớp server)
         const effective = isAdmin ? params : {};
         for await (const ev of askStream(q, effective, ac.signal, forceTag)) {
           if (ev.type === "meta") {
+            metaEv = ev;
             updateItem(botId, { meta: ev });
           } else if (ev.type === "token") {
+            acc += ev.text;
             setItems((prev) =>
               prev.map((m) =>
                 m.id === botId ? { ...m, content: m.content + ev.text } : m,
               ),
             );
           } else if (ev.type === "done") {
+            doneEv = ev;
+            acc = ev.answer ?? acc;
             updateItem(botId, {
               done: ev,
               streaming: false,
               content: ev.answer ?? "",
             });
           } else if (ev.type === "error") {
-            updateItem(botId, {
-              error: ev.message,
-              streaming: false,
-            });
+            errEv = ev.message;
+            updateItem(botId, { error: ev.message, streaming: false });
           }
         }
       } catch (e) {
-        if ((e as Error).name !== "AbortError") {
+        if ((e as Error).name === "AbortError") {
+          aborted = true; // dừng giữa chừng → không lưu bản dở dang
+        } else {
+          errEv = String(e);
           updateItem(botId, { error: String(e), streaming: false });
         }
       } finally {
         updateItem(botId, { streaming: false });
+        if (!aborted) {
+          void saveHistoryItem(sid, {
+            id: botId,
+            role: "assistant",
+            content: acc,
+            question: q,
+            meta: metaEv,
+            done: doneEv,
+            error: errEv,
+          }).then(() => refreshHistory());
+        }
         setBusy(false);
         abortRef.current = null;
         inputRef.current?.focus();
       }
     },
-    [busy, params, isAdmin],
+    [busy, params, isAdmin, activeSid, refreshHistory],
   );
 
   const stop = () => {
@@ -177,11 +300,52 @@ export default function Page() {
   const clearChat = () => {
     if (busy) stop();
     setItems([]);
+    // bắt đầu phiên trống — câu hỏi tiếp theo không dính vào phiên cũ
+    setActiveSid(makeSid());
   };
+
+  // ---- Phiên: mới / mở lại / xoá (nghiệp vụ 1.0 / D1) ----
+  const newSession = () => {
+    clearChat();
+    setDrawer(false);
+  };
+
+  const openSession = async (sid: string) => {
+    if (busy || loadingSid) return;
+    setLoadingSid(sid);
+    const loaded = await loadHistorySession(sid);
+    setActiveSid(sid);
+    setItems(loaded);
+    setLoadingSid(null);
+    setDrawer(false);
+    inputRef.current?.focus();
+  };
+
+  const removeSession = async (e: React.MouseEvent, sid: string) => {
+    e.stopPropagation();
+    await deleteHistorySession(sid);
+    if (sid === activeSid) {
+      setItems([]);
+      setActiveSid(makeSid());
+    }
+    void refreshHistory();
+  };
+
+  // ---- Chuyển câu hỏi cho cán bộ (nghiệp vụ 3.0 / D3) ----
+  const transferToStaff = useCallback(
+    async (p: TransferPayload) => {
+      const r = await addHangCho(p);
+      if (r.ok) void refreshQueue();
+      return { ok: r.ok, error: r.error };
+    },
+    [refreshQueue],
+  );
 
   const logout = () => {
     if (busy) stop();
     clearSession();
+    setItems([]);
+    setActiveSid("");
     setDrawer(false);
     router.replace("/login");
   };
@@ -259,7 +423,7 @@ export default function Page() {
 
         {/* sidebar-content */}
         <div className="no-scrollbar flex min-h-0 flex-1 flex-col gap-4 overflow-auto p-2">
-          {/* ---- nhóm: phiên ---- */}
+          {/* ---- nhóm: phiên + lịch sử (nghiệp vụ 1.0 / D1) ---- */}
           <nav aria-label="Phiên chat" className="flex flex-col gap-0.5">
             {navOpen && (
               <div className="flex h-8 items-center px-3 text-xs font-medium text-muted-foreground/70">
@@ -267,21 +431,99 @@ export default function Page() {
               </div>
             )}
             <button
-              onClick={() => {
-                clearChat();
-                setDrawer(false);
-              }}
+              onClick={newSession}
               className="flex h-8 w-full items-center gap-2 overflow-hidden rounded-control px-3 text-left text-sm transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-3 disabled:opacity-50"
               disabled={busy}
-              title="Xoá lịch sử chat"
+              title="Bắt đầu phiên hỏi đáp mới"
             >
               <svg className="size-4 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 6h18" />
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                <path d="M12 5v14" />
+                <path d="M5 12h14" />
               </svg>
-              {navOpen && <span className="truncate">Xoá lịch sử</span>}
+              {navOpen && <span className="truncate">Phiên mới</span>}
             </button>
+
+            {navOpen &&
+              history.map((h) => {
+                const isActive = h.session_id === activeSid;
+                const isLoading = loadingSid === h.session_id;
+                return (
+                  <div
+                    key={h.session_id}
+                    className="group flex items-center gap-0.5"
+                  >
+                    <button
+                      onClick={() => void openSession(h.session_id)}
+                      disabled={busy || !!loadingSid}
+                      title={h.preview || "Phiên trống"}
+                      className={`flex h-8 min-w-0 flex-1 items-center gap-2 rounded-control px-3 text-left text-sm transition focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50 ${
+                        isActive
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                      }`}
+                    >
+                      {isLoading ? (
+                        <span
+                          aria-hidden
+                          className="inline-block size-3 shrink-0 animate-spin rounded-full border-2 border-brand border-t-transparent motion-reduce:animate-none"
+                        />
+                      ) : (
+                        <svg
+                          aria-hidden
+                          className={`size-3.5 shrink-0 ${
+                            isActive ? "text-brand" : "text-muted-foreground/70"
+                          }`}
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                        </svg>
+                      )}
+                      <span className="truncate">
+                        {h.preview || "Phiên trống"}
+                      </span>
+                      <span className="ml-auto shrink-0 text-[10px] text-muted-foreground">
+                        {h.n_messages}
+                      </span>
+                    </button>
+                    <button
+                      onClick={(e) => void removeSession(e, h.session_id)}
+                      disabled={busy || !!loadingSid}
+                      aria-label={`Xoá phiên: ${h.preview || "trống"}`}
+                      title="Xoá phiên này"
+                      className="size-6 shrink-0 rounded text-muted-foreground/50 opacity-60 transition hover:text-destructive hover:opacity-100 focus-visible:ring-3 focus-visible:opacity-100 disabled:cursor-not-allowed disabled:opacity-30"
+                    >
+                      <svg
+                        aria-hidden
+                        className="mx-auto size-3.5"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                );
+              })}
+
+            {navOpen && history.length === 0 && (
+              <p className="px-3 py-1 text-[11px] text-muted-foreground/60">
+                Chưa có phiên nào — hỏi câu đầu tiên để bắt đầu
+              </p>
+            )}
           </nav>
 
           {/* ---- nhóm: Hệ thống ---- */}
@@ -344,6 +586,71 @@ export default function Page() {
             </div>
           </nav>
 
+          {/* ---- nhóm: Cán bộ tư vấn (admin + can_bo) ---- */}
+          {isStaff && (
+            <nav aria-label="Cán bộ tư vấn" className="flex flex-col gap-0.5">
+              {navOpen && (
+                <div className="flex h-8 items-center px-3 text-xs font-medium text-muted-foreground/70">
+                  Cán bộ tư vấn
+                </div>
+              )}
+              <button
+                onClick={() => {
+                  setQueueOpen(true);
+                  setDrawer(false);
+                }}
+                className="relative flex h-8 w-full items-center gap-2 overflow-hidden rounded-control px-3 text-left text-sm transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-3"
+                title="Câu hỏi sinh viên chuyển sang — chờ cán bộ trả lời"
+              >
+                <svg
+                  aria-hidden
+                  className="size-4 shrink-0"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 6v6l4 2" />
+                  <circle cx="12" cy="12" r="10" />
+                </svg>
+                {navOpen && (
+                  <>
+                    <span className="truncate">Hàng chờ câu hỏi</span>
+                    {queueCounts.cho_xu_ly > 0 && (
+                      <span className="ml-auto shrink-0 rounded-full border border-warning-border bg-warning-soft px-1.5 py-0.5 text-[10px] font-semibold text-warning">
+                        {queueCounts.cho_xu_ly}
+                      </span>
+                    )}
+                  </>
+                )}
+                {!navOpen && queueCounts.cho_xu_ly > 0 && (
+                  <span
+                    aria-hidden
+                    className="absolute right-1.5 top-1.5 size-2 rounded-full bg-warning"
+                  />
+                )}
+              </button>
+              <button
+                onClick={() => {
+                  setKnowledgeOpen(true);
+                  setDrawer(false);
+                }}
+                className="flex h-8 w-full items-center gap-2 overflow-hidden rounded-control px-3 text-left text-sm transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-3"
+                title="Đề xuất tài liệu, rà soát đáp án, xem phê duyệt"
+              >
+                <svg aria-hidden className="size-4 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" />
+                </svg>
+                {navOpen && <span className="truncate">Tri thức & phê duyệt</span>}
+              </button>
+            </nav>
+          )}
+
           {/* ---- nhóm: Quản trị (admin) ---- */}
           {isAdmin && (
             <nav aria-label="Quản trị" className="flex flex-col gap-0.5">
@@ -392,6 +699,37 @@ export default function Page() {
                   <span className="truncate">Quản lý hashtag</span>
                 )}
               </button>
+              <button
+                onClick={() => {
+                  setAdminTab("users");
+                  setAdminOpen(true);
+                  setDrawer(false);
+                }}
+                className="flex h-8 w-full items-center gap-2 overflow-hidden rounded-control px-3 text-left text-sm transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-3"
+                title="Quản lý người dùng, phân quyền, chủ đề"
+              >
+                <svg aria-hidden className="size-4 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M19 8v6M22 11h-6" />
+                </svg>
+                {navOpen && <span className="truncate">Người dùng & phân quyền</span>}
+              </button>
+              <button
+                onClick={() => {
+                  setAdminTab("reports");
+                  setAdminOpen(true);
+                  setDrawer(false);
+                }}
+                className="flex h-8 w-full items-center gap-2 overflow-hidden rounded-control px-3 text-left text-sm transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-3"
+                title="Báo cáo từ lịch sử, đánh giá, hàng chờ"
+              >
+                <svg aria-hidden className="size-4 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 3v18h18" />
+                  <path d="m19 9-5 5-4-4-3 3" />
+                </svg>
+                {navOpen && <span className="truncate">Báo cáo hệ thống</span>}
+              </button>
             </nav>
           )}
         </div>
@@ -399,8 +737,17 @@ export default function Page() {
         {/* sidebar-footer: user */}
         <div className="border-t border-sidebar-border p-2">
           <div className="flex items-center gap-2 rounded-control px-2 py-1.5">
-            <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-[10px] font-medium text-muted-foreground">
-              {isAdmin ? "AD" : "KH"}
+            <span
+              title={session.username}
+              className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-[10px] font-medium text-muted-foreground"
+            >
+              {isAdmin
+                ? "AD"
+                : session.role === "can_bo"
+                  ? "CB"
+                  : session.role === "sinh_vien"
+                    ? "SV"
+                    : "KH"}
             </span>
             {navOpen && (
               <>
@@ -409,7 +756,13 @@ export default function Page() {
                     {session.display}
                   </div>
                   <div className="truncate text-[11px] text-muted-foreground">
-                    {isAdmin ? "Quản trị viên" : "Khách"}
+                    {isAdmin
+                      ? "Quản trị viên"
+                      : session.role === "can_bo"
+                        ? "Cán bộ tư vấn"
+                        : session.role === "sinh_vien"
+                          ? "Sinh viên"
+                          : "Khách"}
                   </div>
                 </div>
                 <button
@@ -464,14 +817,25 @@ export default function Page() {
             </p>
           </div>
 
+          <div className="ml-auto shrink-0">
+            <NotificationBell />
+          </div>
           <span
-            className={`ml-auto shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${
+            className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${
               isAdmin
                 ? "border-brand-border bg-brand-soft text-brand"
-                : "border-border bg-secondary text-muted-foreground"
+                : session.role === "can_bo"
+                  ? "border-warning-border bg-warning-soft text-warning"
+                  : "border-border bg-secondary text-muted-foreground"
             }`}
           >
-            {isAdmin ? "Quản trị" : "Khách"}
+            {isAdmin
+              ? "Quản trị"
+              : session.role === "can_bo"
+                ? "Cán bộ"
+                : session.role === "sinh_vien"
+                  ? "Sinh viên"
+                  : "Khách"}
           </span>
 
           {busy && (
@@ -504,6 +868,7 @@ export default function Page() {
                   pickingDisabled={busy}
                   onPickTag={(tag, question) => send(question, tag)}
                   admin={isAdmin}
+                  onTransfer={transferToStaff}
                 />
               ))}
             </div>
@@ -551,6 +916,33 @@ export default function Page() {
       {/* ============ TAG MANAGER (admin) ============ */}
       {tagManagerOpen && isAdmin && (
         <TagManager onClose={() => setTagManagerOpen(false)} />
+      )}
+
+      {/* ============ HÀNG CHỜ CÁN BỘ (nghiệp vụ 3.0 / D3) ============ */}
+      {queueOpen && isStaff && (
+        <HangChoPanel
+          onClose={() => {
+            setQueueOpen(false);
+            void refreshQueue();
+            void refreshHistory();
+          }}
+        />
+      )}
+
+      {/* ============ TRI THỨC & PHÊ DUYỆT (Cán bộ / Admin) ============ */}
+      {knowledgeOpen && isStaff && (
+        <KnowledgePanel
+          admin={isAdmin}
+          onClose={() => {
+            setKnowledgeOpen(false);
+            void refreshQueue();
+          }}
+        />
+      )}
+
+      {/* ============ QUẢN TRỊ HỆ THỐNG (Admin) ============ */}
+      {adminOpen && isAdmin && (
+        <AdminPanel initialTab={adminTab} onClose={() => setAdminOpen(false)} />
       )}
     </div>
   );

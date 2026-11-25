@@ -28,7 +28,12 @@ export default function LoginPage() {
     try {
       const r = await login(username.trim(), password);
       if (r.ok && r.token && r.role) {
-        setSession({ token: r.token, role: r.role, display: r.display ?? r.role });
+        setSession({
+          token: r.token,
+          username: r.username ?? username.trim(),
+          role: r.role,
+          display: r.display ?? r.role,
+        });
         router.replace("/");
       } else {
         setError(r.error ?? "Đăng nhập thất bại");
@@ -46,7 +51,12 @@ export default function LoginPage() {
     try {
       const r = await guestLogin();
       if (r.ok && r.token) {
-        setSession({ token: r.token, role: "guest", display: "Khách" });
+        setSession({
+          token: r.token,
+          username: r.username ?? "khach",
+          role: "guest",
+          display: "Khách",
+        });
         router.replace("/");
       } else {
         setError("Không vào được chế độ Khách");
@@ -86,7 +96,7 @@ export default function LoginPage() {
           style={{ animationDelay: "80ms" }}
         >
           <h2 className="text-xs font-medium text-muted-foreground/70">
-            Đăng nhập quản trị
+            Đăng nhập tài khoản
           </h2>
           <div className="space-y-2">
             <label htmlFor="username" className="sr-only">
@@ -150,8 +160,10 @@ export default function LoginPage() {
         )}
 
         <p className="mt-5 text-center text-[11px] leading-relaxed text-muted-foreground/70">
-          Admin: chỉnh tham số RAG · gán tag đoạn · sửa định nghĩa hashtag ·
-          xem báo cáo đánh giá
+          Admin <span className="font-mono">admin/admin123</span>: chỉnh tham số ·
+          phê duyệt · quản trị · báo cáo · Cán bộ{" "}
+          <span className="font-mono">canbo/canbo123</span>: trả lời hàng chờ,
+          đề xuất tài liệu, rà soát đáp án
         </p>
       </div>
     </div>

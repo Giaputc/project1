@@ -15,6 +15,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
+from uuid import uuid4
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 FEEDBACK_FILE = DATA_DIR / "danh_gia.json"
@@ -51,10 +52,13 @@ def add_feedback(
     so_sao: int,
     nhan_xet: Optional[str] = None,
     answer_preview: Optional[str] = None,
+    answer: Optional[str] = None,
+    feedback_id: Optional[str] = None,
     tag: Optional[str] = None,
     sources: Optional[list] = None,
     role: Optional[str] = None,
     user: Optional[str] = None,
+    display: Optional[str] = None,
 ) -> dict:
     if vote not in VALID_VOTES:
         raise ValueError("vote phải là 'up' hoặc 'down'")
@@ -62,9 +66,11 @@ def add_feedback(
         raise ValueError("so_sao phải trong khoảng 1-5")
 
     rec = {
+        "id": feedback_id or uuid4().hex[:12],
         "answer_id": str(answer_id)[:64],
         "question": (question or "")[:2000],
         "answer_preview": (answer_preview or "")[:500],
+        "answer": (answer or answer_preview or "")[:8000],
         "vote": vote,
         "so_sao": int(so_sao),
         "nhan_xet": (nhan_xet or "").strip()[:2000] or None,
@@ -72,6 +78,7 @@ def add_feedback(
         "sources": sources or [],
         "role": role,
         "user": user,
+        "display": display or user,
         "created_at": _now(),
     }
 
