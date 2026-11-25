@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "username": "admin",
+      "salt": "25363389c7c3e1b6",
+      "password_hash": "166737b32f7bc440c1285a47d74944656f9acdbd6a6b2fa74b64535333b8fa6e",
+      "role": "admin",
+      "display": "Admin"
+    },
+    {
+      "username": "canbo",
+      "salt": "74b8698b60f2e9a7",
+      "password_hash": "21a7ae49fe733f36b2364d96c2b60ecfe1de6f37f8e22528e1cebd08bdded49e",
+      "role": "can_bo",
+      "display": "Cán bộ tư vấn"
+    },
+    {
+      "username": "sinhvien",
+      "salt": "9c18cf187b4aac31",
+      "password_hash": "af8b62851d8b024e501072eaf88c22e606c7fece3604b6aee91c085ae47e71f1",
+      "role": "sinh_vien",
+      "display": "Sinh Vien"
+    }
+  ]
+}

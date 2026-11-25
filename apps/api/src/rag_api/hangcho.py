@@ -13,11 +13,11 @@ from __future__ import annotations
 import json
 import threading
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Optional
 from uuid import uuid4
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+from rag_api.store import DATA_DIR  # packages/backend/core — dùng chung
+
 QUEUE_FILE = DATA_DIR / "hang_cho.json"
 
 _lock = threading.Lock()

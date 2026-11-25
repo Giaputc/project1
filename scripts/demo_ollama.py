@@ -14,13 +14,13 @@ Luồng (đúng thiết kế đã chốt):
   [5] build prompt (kèm tag + trang) → [6] LLM trả lời, bắt buộc trích nguồn
 
 Usage:
-  .venv/bin/python demo_ollama.py "Điều kiện xét học bổng là gì?"
-  .venv/bin/python demo_ollama.py --preheat "... "     # nạp model ngay lúc mở (không cold start)
-  .venv/bin/python demo_ollama.py                    # interactive (gõ câu hỏi, rỗng = thoát)
-  .venv/bin/python demo_ollama.py --no-llm "..."     # chỉ xem tag + chunk + prompt
-  .venv/bin/python demo_ollama.py --keep-alive -1 "..."   # giữ model RAM mãi (mặc định 24h)
-  .venv/bin/python demo_ollama.py --prompt-file p.txt "..."
-  .venv/bin/python demo_ollama.py --golden --limit 5 --out results.md
+  .venv/bin/python scripts/demo_ollama.py "Điều kiện xét học bổng là gì?"
+  .venv/bin/python scripts/demo_ollama.py --preheat "... "     # nạp model ngay lúc mở (không cold start)
+  .venv/bin/python scripts/demo_ollama.py                    # interactive (gõ câu hỏi, rỗng = thoát)
+  .venv/bin/python scripts/demo_ollama.py --no-llm "..."     # chỉ xem tag + chunk + prompt
+  .venv/bin/python scripts/demo_ollama.py --keep-alive -1 "..."   # giữ model RAM mãi (mặc định 24h)
+  .venv/bin/python scripts/demo_ollama.py --prompt-file p.txt "..."
+  .venv/bin/python scripts/demo_ollama.py --golden --limit 5 --out results.md
 
 Cold start: lần gọi ĐẦU model chưa ở RAM = +55-88s nạp từ disk.
 keep_alive (mặc định 24h) giữ model sau call → các câu sau KHÔNG mất phí này.
@@ -44,7 +44,7 @@ OLLAMA = "http://localhost:11434"
 CHAT_MODEL = "qwen2.5:3b-instruct"
 EMBED_MODEL = "batiai/qwen3-embedding:0.6b-q8"
 
-BASE = Path(__file__).resolve().parent
+BASE = Path(__file__).resolve().parents[1]  # scripts/ → repo root
 CORPUS = BASE / "data" / "corpus"
 CHUNKS_FILE = CORPUS / "chunks_tagged.jsonl"
 TAGS_FILE = CORPUS / "tags.json"

@@ -13,14 +13,14 @@ Output: data/corpus/chunks_tagged.jsonl  (thêm 2 field: tags[], tag_primary)
 - Mục XIII.1-5 (nộp học phí Viettel Money) → tag riêng #nop-hoc-phi.
 
 Ánh xạ 100% rule deterministic theo heading (muc/chuong/phan) — không dùng LLM.
-Run: .venv/bin/python gan_tag.py
+Run: .venv/bin/python scripts/gan_tag.py
 """
 
 import json
 import sys
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parents[1]  # scripts/ → repo root
 DATA_DIR = BASE_DIR / "data" / "corpus"
 INPUT_CHUNKS = DATA_DIR / "chunks.jsonl"
 INPUT_TAGS = DATA_DIR / "tags.json"

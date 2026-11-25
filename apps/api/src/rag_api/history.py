@@ -13,10 +13,10 @@ import json
 import threading
 from collections import defaultdict
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Any, Optional
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+from rag_api.store import DATA_DIR  # packages/backend/core — dùng chung
+
 HISTORY_FILE = DATA_DIR / "lich_su.json"
 
 _lock = threading.Lock()

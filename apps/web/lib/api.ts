@@ -353,6 +353,43 @@ export interface FeedbackInput {
   sources?: string[];
 }
 
+/** Feedback đầy đủ — cán bộ dùng để xem sao/nhận xét của sinh viên */
+export interface FeedbackItem {
+  id: string;
+  answer_id: string;
+  question: string;
+  answer_preview?: string | null;
+  answer?: string | null;
+  vote: "up" | "down";
+  so_sao: number;
+  nhan_xet?: string | null;
+  tag?: string | null;
+  user?: string | null;
+  display?: string | null;
+  role?: string | null;
+  created_at: string;
+}
+
+export async function listFeedbackItems(limit = 200): Promise<FeedbackItem[]> {
+  try {
+    const r = await authedFetch<{ items: FeedbackItem[] }>(`/api/feedback/items?limit=${limit}`);
+    return r.items ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function feedbackToReview(feedbackId: string): Promise<{
+  ok: boolean;
+  error?: string;
+}> {
+  try {
+    return await authedFetch(`/api/feedback/${feedbackId}/to-review`, { method: "POST" });
+  } catch (e) {
+    return { ok: false, error: String(e) };
+  }
+}
+
 export interface FeedbackStats {
   n: number;
   avg_stars: number;
@@ -627,7 +664,7 @@ export async function* askStream(
 export interface Notification {
   id: string;
   user: string;
-  type: "hang_cho_tra_loi" | "hang_cho_moi" | "tai_lieu_duyet" | "tra_loi_duyet" | "he_thong";
+  type: "hang_cho_tra_loi" | "hang_cho_moi" | "tai_lieu_duyet" | "tra_loi_duyet" | "danh_gia_moi" | "he_thong";
   title: string;
   body: string;
   ref_id: string | null;
@@ -771,11 +808,18 @@ export async function reviewDoc(
 export interface ReviewItem {
   id: string;
   answer_id: string | null;
+  feedback_id?: string | null;
   question: string;
   answer: string;
   final_answer: string | null;
   tag: string | null;
-  status: "cho_rasoat" | "da_rasoat" | "da_duyet" | "tu_choi";
+  status: "cho_rasoat" | "da_rasoat" | "da_duyet" | "tu_choi" | "khong_huu_ich";
+  /** Đánh giá của sinh viên — để cán bộ quyết định có trình admin */
+  so_sao?: number | null;
+  vote?: "up" | "down" | null;
+  nhan_xet?: string | null;
+  feedback_display?: string | null;
+  staff_verdict?: "huu_ich" | "khong_huu_ich" | null;
   note: string | null;
   reviewer: string | null;
   approved_by: string | null;
@@ -810,11 +854,16 @@ export async function reviewAnswer(
   id: string,
   note: string,
   editedAnswer?: string,
+  huu_ich = true,
 ): Promise<ReviewResult> {
   try {
     return await authedFetch(`/api/reviews/${id}/review`, {
       method: "POST",
-      body: JSON.stringify({ note: note || null, edited_answer: editedAnswer || null }),
+      body: JSON.stringify({
+        note: note || null,
+        edited_answer: editedAnswer || null,
+        huu_ich,
+      }),
     });
   } catch (e) {
     return { ok: false, error: String(e) };

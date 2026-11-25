@@ -10,6 +10,8 @@ Endpoints:
   POST /api/preheat     — [ADMIN] nạp model vào RAM (~60s)
   POST /api/corpus/reload — [ADMIN] nạp lại corpus sau rebuild.py
   POST /api/feedback    — Đánh giá câu trả lời (↑↓ + sao + nhận xét) → D4
+  GET  /api/feedback/items — [CÁN BỘ/ADMIN] xem sao + nhận xét sinh viên
+  POST /api/feedback/{id}/to-review — [CÁN BỘ/ADMIN] tự đưa feedback vào rà soát
   GET  /api/feedback/stats — [ADMIN] tổng hợp đánh giá, trung bình theo tag
   POST /api/history     — [ĐĂNG NHẬP] lưu 1 tin nhắn vào lịch sử → D1
   GET  /api/history/sessions — danh sách phiên của chính mình
@@ -49,7 +51,7 @@ Phân quyền:
     chỉ xem/trả lời hàng chờ; không chỉnh tham số/tag.
   - Admin: gửi params bình thường + toàn quyền admin.
 
-Chạy:  .venv/bin/uvicorn rag_api.main:app --reload --port 8000
+Chạy:  make dev-api      (hoặc PYTHONPATH=apps/api/src .venv/bin/uvicorn rag_api.main:app --port 8000)
 """
 
 from __future__ import annotations
@@ -201,6 +203,7 @@ class DocReviewRequest(BaseModel):
 class ReviewActionRequest(BaseModel):
     note: Optional[str] = Field(None, max_length=1000)
     edited_answer: Optional[str] = Field(None, max_length=8000)
+    huu_ich: bool = True   # cán bộ đánh giá: có đưa lên admin hay không
 
 
 class ReviewDecideRequest(BaseModel):
@@ -382,7 +385,8 @@ def admin_rebuild(_: dict = Depends(auth.require_admin)):
         try:
             p = subprocess.run(
                 [_sys.executable, "rebuild.py"],
-                cwd=str(eng.ROOT), capture_output=True, text=True, timeout=600,
+                cwd=str(eng.ROOT / "scripts"), capture_output=True, text=True,
+                timeout=600,
             )
         except subprocess.TimeoutExpired:
             return {"ok": False, "error": "Rebuild quá 600s — dừng"}
@@ -507,8 +511,40 @@ def api_feedback(req: FeedbackRequest,
         return {"ok": False, "error": str(e)}
     # đánh giá cao → tự động đưa vào hàng rà soát chuyên môn (cán bộ → admin)
     review = rv.enqueue_from_feedback(rec)
+    if review:
+        nt.broadcast_staff(
+            type="danh_gia_moi",
+            title="Sinh viên đánh giá cao một câu trả lời",
+            body=(f"{rec.get('so_sao')} sao · {rec.get('question', '')[:120]}\n"
+                  f"Nhận xét: {(rec.get('nhan_xet') or '—')[:160]}"),
+            ref_id=review["id"],
+            exclude=(session or {}).get("username"),
+        )
     return {"ok": True, "feedback": rec,
             "review_id": review["id"] if review else None}
+
+
+@app.get("/api/feedback/items")
+def api_feedback_items(limit: int = 200,
+                       _: dict = Depends(auth.require_permission("review_answer"))):
+    """Cán bộ/admin xem đầy đủ sao + nhận xét của sinh viên (D4)."""
+    return {"ok": True, "items": fb.list_feedback(limit)}
+
+
+@app.post("/api/feedback/{feedback_id}/to-review")
+def api_feedback_to_review(
+    feedback_id: str,
+    _: dict = Depends(auth.require_permission("review_answer")),
+):
+    """Cán bộ tự đưa 1 feedback vào hàng rà soát (kể cả <4 sao)."""
+    rec = next((r for r in fb.list_feedback(1000)
+                if r.get("id") == feedback_id), None)
+    if rec is None:
+        raise HTTPException(404, "Không tìm thấy đánh giá")
+    item = rv.enqueue_from_feedback(rec, force=True)
+    if item is None:
+        return {"ok": False, "error": "Feedback này đã có trong hàng rà soát hoặc thiếu nội dung"}
+    return {"ok": True, "item": item}
 
 
 @app.get("/api/feedback/stats")
@@ -777,7 +813,7 @@ def api_reviews_manual(req: ReviewManualRequest,
 def api_reviews_review(item_id: str, req: ReviewActionRequest,
                        s: dict = Depends(auth.require_permission("review_answer"))):
     rec = rv.review(item_id, s.get("display") or s.get("username"),
-                    req.note, req.edited_answer)
+                    req.note, req.edited_answer, huu_ich=req.huu_ich)
     if rec is None:
         raise HTTPException(404, "Không tìm thấy đáp án cần rà soát")
     return {"ok": True, "item": rec}

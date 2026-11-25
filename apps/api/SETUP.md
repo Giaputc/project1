@@ -1,22 +1,24 @@
-# SETUP — `rag_api/` (FastAPI backend)
+# SETUP — `apps/api` (FastAPI backend)
 
-Backend wrap pipeline RAG (`demo_ollama.py`) thành HTTP API: chat SSE, lịch sử,
-hàng chờ, thông báo, rà soát/phê duyệt, đề xuất tài liệu, quản trị & báo cáo.
-Không dùng database — toàn bộ trạng thái là JSON/JSONL trong `data/`.
+Backend wrap pipeline RAG (`scripts/demo_ollama.py`) thành HTTP API: chat SSE,
+lịch sử, hàng chờ, thông báo, rà soát/phê duyệt, đề xuất tài liệu, quản trị &
+báo cáo. Không dùng database — toàn bộ trạng thái là JSON/JSONL trong `data/`.
 
-Xem [SETUP.md ở root](../SETUP.md) để chạy cả hệ thống và [README.md](../README.md)
-để biết kiến trúc/API tổng quát.
+Mã nguồn nằm ở `apps/api/src/rag_api/`; phần dùng chung (đường dẫn + JsonlStore)
+nằm ở `packages/backend/core/src/frm_core/`.
+
+Xem [SETUP.md ở root](../SETUP.md) để chạy cả hệ thống, [README.md](../README.md)
+để biết API tổng quát và [Architect.md](../Architect.md) cho kiến trúc monorepo.
 
 ## 1. Chạy
 
 ```bash
 cd /home/phamvangiap/Projects/project1
 
-# Dev (auto reload khi sửa code)
-.venv/bin/uvicorn rag_api.main:app --reload --port 8000
+make dev-api   # auto reload, Makefile tự export PYTHONPATH
 
-# Hoặc chạy thường
-.venv/bin/uvicorn rag_api.main:app --port 8000
+# Hoặc chạy thường, khai báo path thủ công:
+PYTHONPATH=apps/api/src .venv/bin/uvicorn rag_api.main:app --port 8000
 ```
 
 - Swagger UI: <http://localhost:8000/docs>; OpenAPI: <http://localhost:8000/openapi.json>.
@@ -36,12 +38,12 @@ python3 -m venv .venv
 
 | Biến / file | Mặc định | Ý nghĩa |
 |---|---|---|
-| `ADMIN_USERNAME` / `ADMIN_PASSWORD` | `admin` / `admin123` | Chỉ áp dụng khi `rag_api/users.json` **chưa tồn tại** |
+| `ADMIN_USERNAME` / `ADMIN_PASSWORD` | `admin` / `admin123` | Chỉ áp dụng khi `apps/api/src/rag_api/users.json` **chưa tồn tại** |
 | `CANBO_USERNAME` / `CANBO_PASSWORD` | `canbo` / `canbo123` | Tạo mới khi `users.json` chưa có user `can_bo` |
-| `rag_api/users.json` | tự tạo | Tài khoản + salt + hash SHA-256. Sửa qua API admin hoặc xoá file để seed lại |
-| `rag_api/.rebuild_secret` | tự tạo | Secret nội bộ để `rebuild.py` gọi `/api/corpus/reload` không cần token |
+| `apps/api/src/rag_api/users.json` | tự tạo | Tài khoản + salt + hash SHA-256. Sửa qua API admin hoặc xoá file để seed lại |
+| `apps/api/src/rag_api/.rebuild_secret` | tự tạo | Secret nội bộ để `scripts/rebuild.py` gọi `/api/corpus/reload` không cần token |
 | `data/corpus/` | có sẵn | `chunks_tagged.jsonl`, `tags.json`, `cache/` (embed) |
-| `data/corpus/tags_manual.json` | tự tạo | Tag gán tay, ghi đè tag rule, không bị `rebuild.py` xoá |
+| `data/corpus/tags_manual.json` | tự tạo | Tag gán tay, ghi đè tag rule, không bị `scripts/rebuild.py` xoá |
 
 Kho nghiệp vụ (tự tạo khi có ghi đầu tiên):
 
@@ -51,7 +53,7 @@ Kho nghiệp vụ (tự tạo khi có ghi đầu tiên):
 | D2 Corpus + tri thức đã duyệt | `data/corpus/`, `data/corpus/cache/bosung_embeds_*.json` | `rag_engine.py` |
 | D3 Hàng chờ / tài liệu đề xuất | `data/hang_cho.json`, `data/tri_thuc.jsonl` | `hangcho.py`, `knowledge.py` |
 | D4 Đánh giá / rà soát | `data/danh_gia.json`, `data/ra_soat.jsonl` | `feedback.py`, `reviews.py` |
-| D5 Thông báo / người dùng | `data/thong_bao.jsonl`, `rag_api/users.json` | `notifications.py`, `auth.py` |
+| D5 Thông báo / người dùng | `data/thong_bao.jsonl`, `apps/api/src/rag_api/users.json` | `notifications.py`, `auth.py` |
 | D6 Chủ đề / phòng ban | `data/chu_de.jsonl` | `catalog.py`, `reports.py` |
 
 ## 3. Token & phân quyền
@@ -103,8 +105,18 @@ Chi tiết: admin có mọi quyền; cán bộ có `staff_queue`, `propose_doc`,
 | Admin hoặc `X-Build-Secret` | `POST /api/corpus/reload` |
 | Mọi role (có/không token) | `POST /api/ask`, `POST /api/ask/stream`, `POST /api/feedback` |
 | Đã đăng nhập | `POST /api/history`, `GET /api/history/sessions`, `GET/DELETE /api/history/{sid}`, `POST /api/hangcho`, `GET /api/notifications`, `POST /api/notifications/read-all`, `POST /api/notifications/{id}/read` |
-| Cán bộ/admin | `GET /api/hangcho`, `POST /api/hangcho/{id}/reply`, `POST/GET /api/knowledge`, `GET/POST /api/reviews`, `POST /api/reviews/{id}/review`, `GET /api/admin/reports?days=7` |
+| Cán bộ/admin | `GET /api/hangcho`, `POST /api/hangcho/{id}/reply`, `POST/GET /api/knowledge`, `GET /api/feedback/items`, `POST /api/feedback/{id}/to-review`, `GET/POST /api/reviews`, `POST /api/reviews/{id}/review`, `GET /api/admin/reports?days=7` |
 | Admin | `POST /api/knowledge/{id}/review`, `POST /api/reviews/{id}/decide`, `GET /api/feedback/stats`, `POST /api/preheat`, `POST /api/admin/rebuild`, `GET/POST/PUT/DELETE /api/admin/tags`, `GET /api/admin/chunks`, `PUT/DELETE /api/admin/chunks/{id}/tags`, `GET/POST/PUT/DELETE /api/admin/users`, `GET/POST/PUT/DELETE /api/admin/topics` |
+
+**Luồng 4.0 giữa cán bộ & admin**: `POST /api/feedback` (≥4 sao + `up`) tự tạo
+item `cho_rasoat` và gửi thông báo `danh_gia_moi` cho cán bộ. Cán bộ đọc
+`GET /api/feedback/items` (sao/nhận xét đầy đủ), rồi gọi
+`POST /api/reviews/{id}/review` với `{"note":"...","huu_ich":true|false}`:
+
+- `huu_ich=false` → status `khong_huu_ich`, **dừng ở cán bộ**, admin không thấy.
+- `huu_ich=true` → status `da_rasoat`, admin mới gọi `/decide` để đưa vào tri thức.
+
+Feedback < 4 sao có thể đưa tay vào rà soát qua `POST /api/feedback/{id}/to-review`.
 
 ### Ví dụ curl nhanh
 
@@ -140,6 +152,13 @@ echo "$DOC"
 #   -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" \
 #   -d '{"action":"duyet"}'   # tự embed + reload corpus
 
+# Cán bộ: xem feedback + đánh giá có hữu ích hay không
+curl -s localhost:8000/api/feedback/items -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
+# curl -s -X POST localhost:8000/api/reviews/REVIEW_ID/review \
+#   -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" \
+#   -d '{"note":"Đáp án đúng, giữ nguyên","huu_ich":true}'
+#   → huu_ich:false sẽ chuyển sang "khong_huu_ich", admin không thấy
+
 # Báo cáo 7 ngày
 curl -s 'localhost:8000/api/admin/reports?days=7' -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
 ```
@@ -152,20 +171,24 @@ Body chi tiết của từng endpoint xem trong Swagger `/docs` (hoặc bảng A
 
 - `POST /api/corpus/load`: nạp corpus **blocking** (dùng khi `/health` báo `loading`).
 - `POST /api/corpus/reload`: đọc lại `chunks_tagged.jsonl` + cache embed từ disk;
-  cần token admin hoặc header `X-Build-Secret` (file `rag_api/.rebuild_secret`).
-- `POST /api/admin/rebuild`: chạy `rebuild.py` từ `.md` (md → chunk → tag →
-  embed chunk đổi → reload). Mất vài giây đến ~1 phút; chỉ 1 rebuild chạy cùng lúc.
+  cần token admin hoặc header `X-Build-Secret`
+  (file `apps/api/src/rag_api/.rebuild_secret`).
+- `POST /api/admin/rebuild`: chạy `scripts/rebuild.py` từ `.md` (md → chunk → tag
+  → embed chunk đổi → reload). Mất vài giây đến ~1 phút; chỉ 1 rebuild chạy cùng lúc.
 - Khi admin duyệt tài liệu/đáp án, backend tự gọi `reload_corpus()` — không cần
  restart. Tri thức bổ sung nằm ở cache `bosung_embeds`, **không ghi đè**
  `chunks.jsonl`.
-- Nếu sửa `RULES` trong `gan_tag.py` hoặc normalize lại chunk, chạy
-  `.venv/bin/python rebuild.py --dry-run` trước để xem diff.
+- Nếu sửa `RULES` trong `scripts/gan_tag.py` hoặc normalize lại chunk, chạy
+  `make rebuild-dry` trước để xem diff.
 
 ## 6. Kiểm tra & lỗi thường gặp
 
 ```bash
 cd /home/phamvangiap/Projects/project1
-.venv/bin/python -m compileall -q rag_api
+make check   # compileall apps/api + packages/backend/core + scripts, rồi tsc/lint web
+
+# Hoặc chỉ backend:
+.venv/bin/python -m compileall -q apps/api/src packages/backend/core/src scripts
 .venv/bin/python - <<'PY'
 from fastapi.testclient import TestClient
 from rag_api.main import app
@@ -179,7 +202,7 @@ PY
 |---|---|---|
 | `401 Unauthorized` | Thiếu/expired token (24h hoặc vừa restart) | Đăng nhập lại, gửi `Authorization: Bearer ...` |
 | `403 Forbidden` | Sai role | Dùng `admin` cho endpoint admin; `canbo` cho endpoint cán bộ |
-| `403` trên `/api/corpus/reload` | Gọi từ script local không có token | Gửi header `X-Build-Secret` lấy từ `rag_api/.rebuild_secret` |
+| `403` trên `/api/corpus/reload` | Gọi từ script local không có token | Gửi header `X-Build-Secret` lấy từ `apps/api/src/rag_api/.rebuild_secret` |
 | `422 Unprocessable Entity` | Sai body (vd `vote` không phải `up/down`, `action` sai) | Xem schema tại `/docs` |
 | `corpus đang nạp...` | Embed lần đầu / vừa reload | Đợi rồi gọi `POST /api/corpus/load` hoặc reload `/health` |
 | `Ollama offline` | Ollama chưa chạy/sai model | `ollama serve`, `ollama pull qwen2.5:3b-instruct`, `ollama pull batiai/qwen3-embedding:0.6b-q8` |

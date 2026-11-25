@@ -1,25 +1,27 @@
-# SETUP — `rag-web/` (Next.js frontend)
+# SETUP — `apps/web` (Next.js frontend)
 
-Giao diện chat streaming + panel quản trị cho backend `rag_api`.
-Xem [SETUP.md ở root](../SETUP.md) để chạy cả hệ thống và
-[README.md](../README.md) để biết danh sách API.
+Giao diện chat streaming + panel quản trị cho backend `apps/api`.
+Xem [SETUP.md ở root](../../SETUP.md) để chạy cả hệ thống,
+[README.md](../../README.md) để biết danh sách API và
+[Architect.md](../../Architect.md) cho kiến trúc monorepo.
 
 ## 1. Yêu cầu & cài đặt
 
 - Node.js **20.9+** (theo yêu cầu của Next.js 16.4.3), npm đi kèm Node.
-- Backend `rag_api` đang chạy ở `http://localhost:8000` (xem
-  [`rag_api/SETUP.md`](../rag_api/SETUP.md)).
+- Backend `apps/api` đang chạy ở `http://localhost:8000` (xem
+  [`apps/api/SETUP.md`](../api/SETUP.md)).
 - Repo này đã có `node_modules/`; nếu cài lại:
 
 ```bash
-cd /home/phamvangiap/Projects/project1/rag-web
+cd /home/phamvangiap/Projects/project1/apps/web
 npm install
 ```
 
 ## 2. Chạy
 
 ```bash
-cd /home/phamvangiap/Projects/project1/rag-web
+cd /home/phamvangiap/Projects/project1/apps/web
+# hoặc từ root: make dev-web
 
 npm run dev     # development → http://localhost:3000
 npm run build   # production build
@@ -35,7 +37,7 @@ Mở <http://localhost:3000>. Trang sẽ tự chuyển tới `/login` nếu chư
 Backend mặc định là `http://localhost:8000` (`lib/api.ts`). Nếu backend ở host/cổng khác:
 
 ```bash
-# .env.local trong rag-web/
+# .env.local trong apps/web/
 NEXT_PUBLIC_API_URL=http://192.168.1.10:8000
 ```
 
@@ -44,7 +46,7 @@ nên phải set trước `npm run build`; đổi value lúc runtime sẽ không 
 với bundle đã build. Với `npm run dev`, khởi động lại dev server sau khi sửa `.env.local`.
 
 Nếu frontend chạy origin khác `localhost:3000`, phải thêm origin đó vào
-`CORSMiddleware` trong `rag_api/main.py`.
+`CORSMiddleware` trong `apps/api/src/rag_api/main.py`.
 
 ## 3. Cấu trúc chính
 
@@ -59,7 +61,7 @@ Nếu frontend chạy origin khác `localhost:3000`, phải thêm origin đó v�
 | `components/ParamsPanel.tsx` | Tham số RAG (admin), preheat, reload, xoá chat |
 | `components/TagManager.tsx`, `TagEditor.tsx` | Quản lý định nghĩa hashtag / gán tag tay |
 | `components/HangChoPanel.tsx` | Hàng chờ câu hỏi + trả lời (cán bộ/admin) |
-| `components/KnowledgePanel.tsx` | Đề xuất tài liệu, rà soát & phê duyệt đáp án |
+| `components/KnowledgePanel.tsx` | 3 tab: 📄 Tài liệu · ⭐ Đáp án rà soát · 💬 Phản hồi SV (sao/nhận xét + đánh giá hữu ích) |
 | `components/AdminPanel.tsx` | 3 tab: 👥 Người dùng · 🏷 Chủ đề/Phòng ban · 📊 Báo cáo |
 | `components/NotificationBell.tsx` | Chuông thông báo 🔔 (poll mỗi 15s) |
 | `components/FeedbackStats.tsx` | Thống kê đánh giá (admin) |
@@ -76,11 +78,17 @@ Frontend là client-heavy: hầu hết component dùng `"use client"`, đọc
 | Cán bộ tư vấn | `canbo` / `canbo123` | Thêm **Hàng chờ câu hỏi** (có badge số chờ), **Tri thức & phê duyệt** |
 | Quản trị viên | `admin` / `admin123` | Mọi panel: tham số RAG, quản lý hashtag, người dùng/chủ đề, báo cáo, thống kê đánh giá |
 
-Chi tiết panel **Tri thức & phê duyệt** (`KnowledgePanel.tsx`) có 2 tab:
+Chi tiết panel **Tri thức & phê duyệt** (`KnowledgePanel.tsx`) có 3 tab:
 
 - **📄 Tài liệu**: cán bộ/admin đề xuất; admin duyệt/từ chối → tự reload corpus.
-- **⭐ Đáp án rà soát**: cán bộ vào “Chờ rà soát” → **Rà soát →** sửa/ghi chú →
-  “Lưu rà soát”; admin vào “Chờ phê duyệt” → **Phê duyệt & đưa vào tri thức**.
+- **⭐ Đáp án rà soát**: trên mỗi item hiện **sao + nhận xét** của sinh viên. Cán bộ
+  vào “Chờ rà soát” → **Đánh giá →** sửa/ghi chú → chọn
+  **“✓ Hữu ích — trình quản trị”** (→ `da_rasoat`) hoặc
+  **“✕ Không hữu ích — loại”** (→ `khong_huu_ich`, admin không thấy).
+  Admin chỉ thấy item `da_rasoat` ở “Chờ phê duyệt” → **Phê duyệt & đưa vào tri thức**.
+- **💬 Phản hồi SV**: liệt kê toàn bộ đánh giá (sao, 👍/👎, nhận xét, người gửi,
+  câu hỏi/đáp án). Feedback chưa vào rà soát có nút **“Đưa vào rà soát →”** (kể cả
+  < 4 sao). Khi feedback ≥ 4 sao, chuông 🔔 của cán bộ cũng báo `danh_gia_moi`.
 
 Panel **Quản trị** (`AdminPanel.tsx`): tạo/sửa/xoá user, gán role, quản lý chủ đề
 phòng ban, xem báo cáo D1/D4/D5. Panel **Báo cáo hệ thống** mở sẵn tab `📊 Báo cáo`.
@@ -96,15 +104,16 @@ Lịch sử/thông báo trên server cũng tách theo `username` tương ứng.
 
 ## 5. Thử nhanh trên UI
 
-1. Vào Khách → hỏi “Điều kiện xét học bổng là gì?” → thấy streaming, nguồn `[T1]`,
-   badge quyết định; nếu mơ hồ sẽ hiện chip `#tag` để bấm chọn.
-2. Chấm 👍 và ≥ 4 sao → đáp án vào hàng rà soát.
-3. Đăng nhập `canbo` → **Tri thức & phê duyệt** → **⭐ Đáp án rà soát** →
-   “Chờ rà soát” → rà soát & lưu.
+1. Vào tài khoản sinh viên do admin tạo → hỏi “Điều kiện xét học bổng là gì?” →
+   thấy streaming, nguồn `[T1]`, badge quyết định; nếu mơ hồ sẽ hiện chip `#tag`.
+2. Chấm 👍 và ≥ 4 sao + nhận xét → đáp án vào hàng rà soát, cán bộ nhận 🔔.
+3. Đăng nhập `canbo` → **Tri thức & phê duyệt** → **💬 Phản hồi SV** để xem sao/nhận
+   xét → **⭐ Đáp án rà soát** → “Chờ rà soát” → **Đánh giá →** → chọn
+   “Hữu ích — trình quản trị” (hoặc “Không hữu ích — loại”).
 4. Đăng nhập `admin` → cùng panel → “Chờ phê duyệt” → phê duyệt → hỏi lại câu đó
-   để thấy nguồn `TL-...` mới.
+   để thấy nguồn `TL-...` mới. (Nếu cán bộ chọn “không hữu ích”, admin không thấy.)
 5. Hỏi câu ngoài sổ tay → badge `✕ NGOÀI TÀI LIỆU` + tự động chuyển cán bộ.
-   Đăng nhập cán bộ → **Hàng chờ câu hỏi** → trả lời → quay lại Khách xem 🔔.
+   Đăng nhập cán bộ → **Hàng chờ câu hỏi** → trả lời → quay lại sinh viên xem 🔔.
 6. Admin: **Người dùng & phân quyền** → tạo tài khoản `sinh_vien` để thử phân quyền;
    **Báo cáo hệ thống** → xem số liệu 7 ngày.
 
@@ -116,7 +125,7 @@ Lịch sử/thông báo trên server cũng tách theo `username` tương ứng.
   `done` (hoặc `error`). Nút **Dừng** ở header abort stream đang chạy.
 - Nếu không gửi được `params` khi dùng cán bộ/khách: đây là thiết kế — server chỉ
   nhận `params` từ role `admin`; UI cũng ẩn panel tương ứng.
-- `rag-web/AGENTS.md` được `next dev` tạo lại tự động; không xoá file này.
+- `apps/web/AGENTS.md` được `next dev` tạo lại tự động; không xoá file này.
 - `.next/` và `tsconfig.tsbuildinfo` là cache build, có thể xoá để build lại từ đầu.
 
 ## 7. Lỗi thường gặp

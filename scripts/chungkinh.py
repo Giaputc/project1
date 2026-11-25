@@ -8,7 +8,7 @@ import re
 import json
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parents[1]  # scripts/ → repo root
 DATA_DIR = BASE_DIR / "data"
 INPUT_MD = DATA_DIR / "so_tay_sinh_vien_k64.md"
 OUTPUT_JSON = BASE_DIR / "chunks.json"

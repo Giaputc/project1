@@ -13,11 +13,11 @@ import json
 import threading
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Any, Optional
 from uuid import uuid4
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+from rag_api.store import DATA_DIR  # packages/backend/core — dùng chung
+
 FEEDBACK_FILE = DATA_DIR / "danh_gia.json"
 
 _lock = threading.Lock()

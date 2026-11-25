@@ -1,8 +1,9 @@
 # SETUP — Chatbot tư vấn sinh viên UTC (RAG)
 
 Hướng dẫn chạy toàn bộ hệ thống: **FastAPI `:8000`** + **Next.js `:3000`** + **Ollama local**.
-Chi tiết từng phần xem [`rag_api/SETUP.md`](rag_api/SETUP.md) và
-[`rag-web/SETUP.md`](rag-web/SETUP.md). Kiến trúc & API đầy đủ ở [`README.md`](README.md).
+Chi tiết từng phần xem [`apps/api/SETUP.md`](apps/api/SETUP.md) và
+[`apps/web/SETUP.md`](apps/web/SETUP.md). Kiến trúc & API đầy đủ ở
+[`README.md`](README.md) và [`Architect.md`](Architect.md).
 
 ## 1. Yêu cầu
 
@@ -12,7 +13,7 @@ Chi tiết từng phần xem [`rag_api/SETUP.md`](rag_api/SETUP.md) và
 | Model trả lời | `qwen2.5:3b-instruct` |
 | Model embedding | `batiai/qwen3-embedding:0.6b-q8` |
 | Python | 3.11+ (đang dùng 3.14) — có sẵn `.venv` trong repo |
-| Node | 20.9+ (Next.js 16.4.3, React 19) — có sẵn `rag-web/node_modules` |
+| Node | 20.9+ (Next.js 16.4.3, React 19) — có sẵn `apps/web/node_modules` |
 | Cổng | `8000` (backend), `3000` (frontend) |
 
 Nếu chưa có model:
@@ -25,7 +26,7 @@ ollama serve          # nếu Ollama chưa chạy
 
 ## 2. Cài đặt lần đầu
 
-Repo này đã có `.venv` và `rag-web/node_modules`. Nếu cần cài lại từ đầu:
+Repo này đã có `.venv` và `apps/web/node_modules`. Nếu cần cài lại từ đầu:
 
 ```bash
 cd /home/phamvangiap/Projects/project1
@@ -33,7 +34,7 @@ cd /home/phamvangiap/Projects/project1
 python3 -m venv .venv
 .venv/bin/pip install fastapi uvicorn httpx numpy rank-bm25 pydantic python-multipart pytest
 
-cd rag-web && npm install
+cd apps/web && npm install
 ```
 
 Kiểm tra corpus (đã có sẵn trong repo):
@@ -48,13 +49,20 @@ Cache nằm ở `data/corpus/cache/` và `data/corpus/cache/bosung_embeds_...jso
 ## 3. Chạy (2 terminal)
 
 ```bash
-# Terminal 1 — Backend
 cd /home/phamvangiap/Projects/project1
-.venv/bin/uvicorn rag_api.main:app --port 8000
+
+# Terminal 1 — Backend (Makefile tự export PYTHONPATH)
+make dev-api
 
 # Terminal 2 — Frontend
-cd /home/phamvangiap/Projects/project1/rag-web
-npm run dev
+make dev-web
+```
+
+Không dùng Makefile thì phải khai báo path thủ công:
+
+```bash
+PYTHONPATH=apps/api/src .venv/bin/uvicorn rag_api.main:app --port 8000
+cd apps/web && npm run dev
 ```
 
 Mở <http://localhost:3000>. Kiểm tra backend:
@@ -69,16 +77,16 @@ curl localhost:8000/health
 | Vai trò | Đăng nhập | Làm được gì |
 |---|---|---|
 | Khách / Sinh viên | nút “👤 Vào với tư cách Khách” (hoặc user do admin tạo) | Hỏi đáp, lịch sử, đánh giá, chuyển câu hỏi cho cán bộ, xem thông báo 🔔. Mỗi khách là `khach_<guest_id>` riêng, không dùng chung một phiên |
-| Cán bộ tư vấn | `canbo` / `canbo123` | Hàng chờ, đề xuất tài liệu, rà soát đáp án, báo cáo |
+| Cán bộ tư vấn | `canbo` / `canbo123` | Hàng chờ, đề xuất tài liệu, xem sao/nhận xét SV + đánh giá hữu ích/không hữu ích, báo cáo |
 | Quản trị viên | `admin` / `admin123` | Mọi quyền + tham số/tag, phê duyệt, quản trị user/chủ đề |
 
 Demo luồng “học từ phản hồi” (5 phút):
 
-1. Đăng nhập **Khách** → hỏi “Điều kiện xét học bổng là gì?” → xem nguồn `[T1]` + nhưng chip `#tag` nếu mơ hồ.
-2. Bấm 👍 hoặc chấm ≥ 4 sao → đáp án vào hàng rà soát.
-3. Đăng nhập `canbo` → sidebar **Tri thức & phê duyệt** → tab “⭐ Đáp án rà soát” → “Chờ rà soát” → **Rà soát →** sửa/ghi chú → **Lưu rà soát**.
-4. Đăng nhập `admin` → cùng panel → tab “⭐ Đáp án rà soát” → bộ lọc “Chờ phê duyệt” → **Phê duyệt & đưa vào tri thức** (tự reload corpus).
-5. Quay lại Khách, hỏi lại câu đó → nguồn có chunk `TL-...` mới.
+1. Đăng nhập **Sinh viên** (tài khoản do admin tạo) → hỏi “Điều kiện xét học bổng là gì?” → xem nguồn `[T1]` + nhận chip `#tag` nếu mơ hồ.
+2. Bấm 👍 + chấm ≥ 4 sao + nhận xét → đáp án vào hàng rà soát, cán bộ nhận 🔔.
+3. Đăng nhập `canbo` → **Tri thức & phê duyệt** → tab “💬 Phản hồi SV” xem sao/nhận xét → tab “⭐ Đáp án rà soát” → “Chờ rà soát” → **Đánh giá →** sửa/ghi chú → **“✓ Hữu ích — trình quản trị”** (hoặc **“✕ Không hữu ích — loại”**).
+4. Đăng nhập `admin` → cùng panel → bộ lọc “Chờ phê duyệt” → **Phê duyệt & đưa vào tri thức** (tự reload corpus). Item cán bộ loại sẽ không hiện ở đây.
+5. Quay lại sinh viên, hỏi lại câu đó → nguồn có chunk `TL-...` mới.
 
 Demo luồng “AI không đủ tin cậy”:
 
@@ -88,8 +96,8 @@ Demo luồng “AI không đủ tin cậy”:
 
 ## 5. Cập nhật dữ liệu
 
-- **Sửa sổ tay**: sửa `data/so_tay_sinh_vien_k64.md` rồi
-  `.venv/bin/python rebuild.py` (xem chi tiết trong `README.md`).
+- **Sửa sổ tay**: sửa `data/so_tay_sinh_vien_k64.md` rồi `make rebuild`
+  (hoặc `make rebuild-dry` để xem diff). Xem chi tiết trong `README.md`.
 - **Thêm tài liệu nhanh**: UI admin/cán bộ → “Tri thức & phê duyệt” → đề xuất →
   admin duyệt → embed + index ngay, không cần sửa `.md`.
 - **Nạp lại corpus**: admin bấm “🔄 Nạp lại corpus” hoặc `POST /api/corpus/reload`.
@@ -109,7 +117,7 @@ Demo luồng “AI không đủ tin cậy”:
 ## 7. Dữ liệu runtime (tự tạo, đã ignore git)
 
 ```
-rag_api/users.json          # tài khoản + hash mật khẩu
+apps/api/src/rag_api/users.json  # tài khoản + hash mật khẩu
 data/lich_su.json           # D1 lịch sử phiên
 data/hang_cho.json          # D3 hàng chờ
 data/danh_gia.json          # D4 đánh giá

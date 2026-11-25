@@ -17,6 +17,7 @@ const TYPE_ICON: Record<Notification["type"], string> = {
   hang_cho_moi: "📥",
   tai_lieu_duyet: "📄",
   tra_loi_duyet: "⭐",
+  danh_gia_moi: "⭐",
   he_thong: "🔔",
 };
 

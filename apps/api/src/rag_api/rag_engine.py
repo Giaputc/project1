@@ -22,9 +22,12 @@ import time
 from pathlib import Path
 from typing import Any, Generator, Optional
 
-ROOT = Path(__file__).resolve().parent.parent
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+# apps/api/src/rag_api/rag_engine.py → repo root
+ROOT = Path(__file__).resolve().parents[4]
+SCRIPTS_DIR = ROOT / "scripts"          # pipeline CLI dùng chung với rebuild.py
+for _p in (SCRIPTS_DIR, ROOT):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
 
 import demo_ollama as de  # noqa: E402  (pipeline gốc — không sửa)
 

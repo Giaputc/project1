@@ -2,9 +2,9 @@
 rebuild.py — Đồng bộ data/so_tay_sinh_vien_k64.md → corpus RAG → web.
 
 Sửa thông tin trong file .md rồi chạy:
-    .venv/bin/python rebuild.py            # rebuild + verify + reload backend
-    .venv/bin/python rebuild.py --dry-run  # chỉ in diff, KHÔNG ghi gì
-    .venv/bin/python rebuild.py --no-reload  # bỏ qua bước gọi backend reload
+    .venv/bin/python scripts/rebuild.py            # rebuild + verify + reload backend
+    .venv/bin/python scripts/rebuild.py --dry-run  # chỉ in diff, KHÔNG ghi gì
+    .venv/bin/python scripts/rebuild.py --no-reload  # bỏ qua bước gọi backend reload
 
 Luồng:
   [1] So md (đã normalize) với text 158 chunk cũ (substring match từng chunk).
@@ -31,7 +31,8 @@ import time
 import unicodedata
 from pathlib import Path
 
-BASE = Path(__file__).resolve().parent
+BASE = Path(__file__).resolve().parents[1]  # scripts/ → repo root
+SCRIPTS = Path(__file__).resolve().parent
 MD_FILE = BASE / "data" / "so_tay_sinh_vien_k64.md"
 CORPUS = BASE / "data" / "corpus"
 CHUNKS_FILE = CORPUS / "chunks.jsonl"
@@ -42,7 +43,7 @@ MAX_SIZE = 1200          # bằng max chunk hiện có (max thực tế trong co
 IMG_RE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 HEAD_RE = re.compile(r"^(#{1,4})\s+(.+?)\s*$", re.M)
 
-sys.path.insert(0, str(BASE))
+sys.path.insert(0, str(SCRIPTS))
 import demo_ollama as de  # noqa: E402
 import gan_tag            # noqa: E402
 
@@ -353,9 +354,10 @@ def main() -> int:
         print("\n[5] Gọi backend reload ...")
         try:
             import httpx
-            # secret nội bộ do backend tạo (rag_api/.rebuild_secret) — reload
+            # secret nội bộ do backend tạo (apps/api/src/rag_api/.rebuild_secret)
             # giờ là endpoint admin, script local dùng secret thay token
-            secret_file = Path(__file__).resolve().parent / "rag_api" / ".rebuild_secret"
+            secret_file = (BASE / "apps" / "api" / "src" / "rag_api"
+                           / ".rebuild_secret")
             headers = {}
             if secret_file.exists():
                 headers["X-Build-Secret"] = secret_file.read_text(encoding="utf-8").strip()
@@ -367,7 +369,7 @@ def main() -> int:
                   f"restart tay: uvicorn rag_api.main:app --port 8000")
 
     print(f"\n[DONE] Web đã cập nhật dữ liệu mới. "
-          f"Có thể kiểm tra: .venv/bin/python demo_ollama.py --golden")
+          f"Có thể kiểm tra: .venv/bin/python scripts/demo_ollama.py --golden")
     return 0
 
 

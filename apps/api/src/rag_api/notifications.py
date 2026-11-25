@@ -4,6 +4,7 @@ notifications.py — Thông báo cho người dùng (kho THONG_BAO / D5).
 JSON-lines tại data/thong_bao.jsonl. Dùng cho:
   - cán bộ trả lời xong → sinh viên nhận thông báo (có nội dung trả lời)
   - câu hỏi mới vào hàng chờ → cán bộ/admin nhận thông báo
+  - sinh viên đánh giá cao → cán bộ/admin nhận thông báo `danh_gia_moi`
   - tài liệu / câu trả lời được phê duyệt → người đề xuất nhận thông báo
 """
 
@@ -17,7 +18,7 @@ STORE = JsonlStore(DATA_DIR / "thong_bao.jsonl")
 
 VALID_TYPES = {
     "hang_cho_tra_loi", "hang_cho_moi", "tai_lieu_duyet",
-    "tra_loi_duyet", "he_thong",
+    "tra_loi_duyet", "danh_gia_moi", "he_thong",
 }
 
 

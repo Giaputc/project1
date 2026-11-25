@@ -5,8 +5,10 @@ reviews.py — Rà soát chuyên môn & phê duyệt câu trả lời (nghiệp 
 phê duyệt rồi đưa ngược vào cơ sở tri thức để AI ngày càng chính xác hơn."
 
 Tự động đưa vào hàng rà soát khi feedback: vote=up VÀ so_sao>=4.
-Cán bộ: đọc + sửa đáp án (da_rasoat). Admin: duyệt → knowledge.add_approved
+Cán bộ: đọc đánh giá (sao/nhận xét) của sinh viên, đánh giá \"có hữu ích hay
+không\" rồi mới trình admin (da_rasoat). Admin: duyệt → knowledge.add_approved
 (kind='tra_loi') → sau /api/corpus/reload AI dùng được đáp án này.
+Cán bộ chọn \"không hữu ích\" → status `khong_huu_ich`, admin không thấy.
 
 JSON-lines tại data/ra_soat.jsonl.
 """
@@ -19,7 +21,7 @@ from rag_api.store import JsonlStore, DATA_DIR, now
 
 STORE = JsonlStore(DATA_DIR / "ra_soat.jsonl")
 
-VALID_STATUS = {"cho_rasoat", "da_rasoat", "da_duyet", "tu_choi"}
+VALID_STATUS = {"cho_rasoat", "da_rasoat", "da_duyet", "tu_choi", "khong_huu_ich"}
 AUTO_THRESHOLD = 4  # sao
 
 
@@ -28,9 +30,14 @@ def _new_id() -> str:
     return uuid4().hex[:12]
 
 
-def enqueue_from_feedback(rec: dict) -> Optional[dict]:
-    """Đưa đáp án được đánh giá cao vào hàng rà soát (1 lần / answer_id)."""
-    if rec.get("vote") != "up" or int(rec.get("so_sao") or 0) < AUTO_THRESHOLD:
+def enqueue_from_feedback(rec: dict, force: bool = False) -> Optional[dict]:
+    """Đưa đáp án được đánh giá vào hàng rà soát (1 lần / answer_id).
+
+    Mặc định chỉ lấy vote=up & >=4 sao; `force=True` cho cán bộ tự đưa vào.
+    """
+    if not force and (
+        rec.get("vote") != "up" or int(rec.get("so_sao") or 0) < AUTO_THRESHOLD
+    ):
         return None
     aid = rec.get("answer_id")
     if aid and STORE.find(lambda r: r.get("answer_id") == aid):
@@ -43,6 +50,11 @@ def enqueue_from_feedback(rec: dict) -> Optional[dict]:
         "answer_id": aid,
         "feedback_id": rec.get("id"),
         "feedback_user": rec.get("user"),
+        "feedback_display": rec.get("display"),
+        "so_sao": rec.get("so_sao"),
+        "vote": rec.get("vote"),
+        "nhan_xet": rec.get("nhan_xet"),
+        "staff_verdict": None,
         "question": (rec.get("question") or "")[:2000],
         "answer": text[:8000],
         "final_answer": None,
@@ -69,6 +81,11 @@ def add_manual(*, question: str, answer: str, tag: Optional[str] = None,
         "answer_id": None,
         "feedback_id": None,
         "feedback_user": user,
+        "feedback_display": None,
+        "so_sao": None,
+        "vote": None,
+        "nhan_xet": None,
+        "staff_verdict": None,
         "question": q[:2000],
         "answer": a[:8000],
         "final_answer": None,
@@ -97,16 +114,23 @@ def get(item_id: str) -> Optional[dict]:
 
 
 def review(item_id: str, reviewer: str, note: Optional[str] = None,
-           edited_answer: Optional[str] = None) -> Optional[dict]:
-    """Cán bộ rà soát chuyên môn — có thể sửa đáp án trước khi trình admin."""
+           edited_answer: Optional[str] = None,
+           huu_ich: bool = True) -> Optional[dict]:
+    """Cán bộ đánh giá đáp án sau khi đọc feedback của sinh viên.
+
+    huu_ich=True  → da_rasoat, trình admin phê duyệt.
+    huu_ich=False → khong_huu_ich, dừng ở cán bộ (admin không thấy).
+    """
+    verdict = "huu_ich" if huu_ich else "khong_huu_ich"
     return STORE.update(
         lambda r: r.get("id") == item_id
         and r.get("status") in ("cho_rasoat", "da_rasoat"),
         lambda r: r.update({
-            "status": "da_rasoat",
-            "final_answer": (edited_answer or "").strip()[:8000]
-            or r.get("answer"),
+            "status": "da_rasoat" if huu_ich else "khong_huu_ich",
+            "final_answer": ((edited_answer or "").strip()[:8000]
+                             or r.get("answer")) if huu_ich else r.get("final_answer"),
             "note": (note or "").strip()[:1000] or None,
+            "staff_verdict": verdict,
             "reviewer": reviewer,
             "reviewed_at": now(),
         }),
